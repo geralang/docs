@@ -1,0 +1,206 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@500&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+
+:root {
+    --background: #1f1717;
+    --text: #fcf5ed;
+    --accent-dark: #625195;
+    --accent-light: #b85995;
+
+    --logo-size: 20rem;
+    --title-margin: 5rem;
+}
+
+*::selection {
+    background-color: var(--background);
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    margin: 0px;
+    display: flex;
+    flex-direction: row;
+    background-color: var(--background);
+    font-family: Rubik;
+    color: var(--text);
+}
+
+a {
+    font-weight: bold;
+    text-decoration: underline;
+    color: var(--text);
+}
+
+a:hover {
+    color: var(--background);
+    cursor: pointer;
+}
+
+.codespan {
+    background-color: var(--background);
+    color: var(--text);
+    padding: 0.15rem;
+    border-radius: 0.25rem;
+    font-family: "Fira Code", monospace;
+}
+
+.heading {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.playground {
+    position: relative;
+    width: 100%;
+}
+
+.playground *::selection {
+    background-color: var(--accent-dark);
+    color: var(--text);
+}
+
+.playground-editor-wrapper {
+    position: relative;
+    width: 100%;
+    background-color: var(--background);
+    border-radius: 0.5rem;
+}
+
+.playground-editor {
+    position: relative;
+    width: 100%;
+    resize: none;
+    box-sizing: border-box;
+    padding: 1rem;
+    overflow: hidden;
+    outline: none;
+    border: none;
+    font-family: "Fira Code", monospace;
+    background-color: rgba(0, 0, 0, 0);
+    color: rgba(0, 0, 0, 0);
+    min-height: 5rem;
+    overflow-wrap: break-word;
+    line-height: 1.2rem;
+    z-index: 1;
+    caret-color: var(--accent-light);
+    font-size: 1rem;
+    white-space: pre-wrap;
+}
+
+.playground-editor-highlighted {
+    position: absolute;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 1rem;
+    font-family: "Fira Code", monospace;
+    overflow-wrap: break-word;
+    line-height: 1.2rem;
+    font-size: 1rem;
+    white-space: pre-wrap;
+}
+
+.playground-run-button {
+    position: absolute;
+    right: 0.25rem;
+    top: 0.25rem;
+    border: none;
+    outline: none;
+    font-family: Rubik;
+    font-size: 1rem;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    background-color: var(--text);
+    color: var(--accent-dark);
+    z-index: 2;
+}
+
+.playground-run-button:hover {
+    color: var(--text);
+    background-color: var(--background);
+    outline: 1px solid var(--text);
+}
+
+.playground-output {
+    width: 100%;
+    white-space: pre-wrap;
+    margin-top: 0.5rem;
+    background-color: var(--background);
+    font-size: 1rem;
+    padding: 0.5rem;
+    box-sizing: border-box;
+    border-radius: 0.5rem;
+    max-height: 20rem;
+    overflow-y: auto;
+}
+
+.playground-output:empty {
+    display: none;
+}
+
+.playground-output-error {
+    color: var(--accent-light);
+}
+
+#navigator {
+    width: 50vmin;
+    height: 100vh;
+    background-color: var(--accent-dark);
+    border-radius: 0px 1rem 1rem 0px;
+    padding: 1rem;
+    box-sizing: border-box;
+    position: relative;
+}
+
+#navigator-toggle {
+    position: absolute;
+    transform: translate(100%, 0%);
+    right: 0px;
+    font-size: 1rem;
+    padding: 0.5rem;
+    background-color: var(--text);
+    border-radius: 0px 0.5rem 0.5rem 0px;
+    color: var(--background);
+    cursor: pointer;
+}
+
+#navigator-toggle:hover {
+    background-color: var(--background);
+    color: var(--text);
+    outline: 1px solid var(--text);
+}
+
+#navigator-content {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+}
+
+#navigator-logo {
+    width: 25%;
+    margin-left: 50%;
+    transform: translate(-50%, 0px);
+    background-color: var(--background);
+    border-radius: 50%;
+}
+
+#reader-wrapper {
+    flex-grow: 1;
+    min-height: 100%;
+    padding: 1rem;
+    box-sizing: border-box;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#reader {
+    margin-left: 50%;
+    transform: translate(-50%, 0%);
+    width: min(100vw, 45vmax);
+    min-height: 100%;
+    background-color: var(--accent-light);
+    border-radius: 1rem;
+    padding: 2rem;
+    box-sizing: border-box;
+}
