@@ -18,13 +18,13 @@ const pages = [
         won't explain core programming concepts, but instead only how they
         are used in the Gera programming language.
         <br><br>
-        <pre><gc>
+        <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 proc main() {
     std::io::println("Hello, Gera!")
 }
-        </gc></pre>
+        </span></gc></pre>
         <i>The Gera compiler has been embedded into this site, allowing
         code inside of any of the examples (which can be edited)
         to be compiled to Javascript and executed right here in your browser
@@ -79,7 +79,7 @@ proc main() {
             <br>
             Comments start with <c>//</c> and end at the next line break.
             <br>
-            <pre><gc>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 // this is the program entry point
@@ -87,7 +87,7 @@ proc main() {
     var x = 5 + 15
     std::io::println(x) // prints '20'
 }
-            </gc></pre>
+            </span></gc></pre>
 
         `),
 
@@ -106,19 +106,19 @@ proc main() {
             Each program starts off at the start of a procedure, this usually being
             <c>main</c>.
             <br>
-            <pre><gc>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 proc main() {
     // the program starts here
 }
-            </gc></pre>
+            </span></gc></pre>
             <br><br>
             Procedures may return a value by using the <c>return</c>-keyword,
             <b>always</b> followed by the value to return.
             If you do not wish to return a value, simply use <c>return unit</c>.
             <br>
-            <pre><gc>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 proc main() {
@@ -128,13 +128,13 @@ proc main() {
 proc add(x, y) {
     return x + y
 }
-            </gc></pre>
+            </span></gc></pre>
             <br><br>
             A procedure can be called by writing its name
             followed by a list of parameter values. The expression
             will result in the value returned by the procedure.
             <br>
-            <pre><gc>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 proc main() {
@@ -144,7 +144,7 @@ proc main() {
 proc add(x, y) {
     return x + y
 }
-            </gc></pre>
+            </span></gc></pre>
         `),
 
         page("Variables", `
@@ -155,18 +155,18 @@ proc add(x, y) {
             <br>
             By convention, Gera variable names are in snake case.
             <br>
-            <pre><gc>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 proc main() {
     var x = 5
     var y = 10
 }
-            </gc></pre>
+            </span></gc></pre>
             Variables defined outside of a procedure or function are global variables,
             which may be accessed from anywhere.
             <br>
-            <pre><gc>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 var x = 5
@@ -174,32 +174,32 @@ var x = 5
 proc main() {
     var y = x
 }
-            </gc></pre> 
+            </span></gc></pre> 
             <br><br>
             Variables in Gera are immutable by default, not allowing us to assign a new value
             after the variable has already been defined.
             This means that the following will produce an error:
             <br>
-            <pre><gc>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 proc main() {
     var x = 5
     x = 25
 }
-            </gc></pre>
+            </span></gc></pre>
             To allow a new value to be assigned to the variable, we must define
             it as a <c>mut var</c>.
             However, note that global variables may not be defined as mutable.
             <br>
-            <pre><gc>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 proc main() {
     mut var x = 5
     x = 25
 }
-            </gc></pre>
+            </span></gc></pre>
         `),
         
         page("Modules", `
@@ -222,7 +222,7 @@ proc main() {
             To allow other modules to access a procedure or variable,
             use the <c>pub</c>-keyword followed by the thing you want to be public.
             <br>
-            <pre><gc>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 proc main() {}
@@ -230,19 +230,19 @@ proc main() {}
 pub proc add(x, y) {
     return x + y
 }
-            </gc></pre>
+            </span></gc></pre>
             <br><br>
             To access a procedure or variable from another module,
             simply specify its full module path,
             such as <c>std::io::println</c> or <c>std::math::PI</c>.
             <br>
-            <pre><gc>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 proc main() {
     std::io::println(std::math::PI)
 }
-            </gc></pre>
+            </span></gc></pre>
             <br><br>
             However, always typing out the full path can become fairly dreadful.
             <br>
@@ -258,7 +258,7 @@ proc main() {
             use the <c>*</c>-operator. Writing <c>use std::io::*</c> will turn
             anything inside of that module into the full path.
             <br>
-            <pre><gc>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 use std::io // turns 'io' into 'std::io'
@@ -270,8 +270,8 @@ proc main() {
     io::println(TAU)
     io::println(E)
 }
-            </gc></pre>
-            <pre><gc>
+            </span></gc></pre>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 use std::io::println
@@ -280,7 +280,7 @@ use std::math::* // same as 'use std::math::(PI, TAU, sin, cos, pow, ...)'
 proc main() {
     println(sin(PI)) // 'sin' and 'PI' are in 'std::math'
 }
-            </gc></pre>
+            </span></gc></pre>
         `),
 
         page("Booleans", `
@@ -312,7 +312,7 @@ proc main() {
                 </li>
             </ul>
             <br>
-            <pre><gc>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 use std::io::println
@@ -322,7 +322,7 @@ proc main() {
     var y = !x || false
     println(y)
 }
-            </gc></pre>
+            </span></gc></pre>
         `),
 
         page("Numbers", `
@@ -334,14 +334,14 @@ proc main() {
             Integers are denoted by simply writing the integer, and floats
             are denoted by writing the number, which must contain the decimal point.
             <br>
-            <pre><gc>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 proc main() {
     var x = 25 // 'x' is an integer
     var y = 3.14 // 'y' is a float
 }
-            </gc></pre>
+            </span></gc></pre>
             <br><br>
             There are a number of operations available to be used with numbers:
             <ul>
@@ -369,7 +369,7 @@ proc main() {
             This is because when converting from a float to an int (and vice-versa),
             precision will inevitably be lost.
             <br>
-            <pre><gc>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 use std::io::println
@@ -380,11 +380,11 @@ proc main() {
     var z = x + y
     println(z)
 }
-            </gc></pre>
+            </span></gc></pre>
             To make the above work, use the built-in <c>as_flt</c>- and <c>as_int</c>-procedures,
             which both take a number and turn it into a float and integer.
             <br>
-            <pre><gc>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 use std::io::println
@@ -395,7 +395,7 @@ proc main() {
     var z = as_flt(x) + y
     println(z)
 }
-            </gc></pre>
+            </span></gc></pre>
         `),
 
         page("Strings", `
@@ -404,7 +404,7 @@ proc main() {
             Strings of text may be created by simply writing your text inside
             of double quotes. Strings can reach across lines.
             <br>
-            <pre><gc>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 use std::io::println
@@ -412,7 +412,7 @@ use std::io::println
 proc main() {
     println("Hello, world!")
 }
-            </gc></pre>
+            </span></gc></pre>
             <br><br>
             A backspace in the string literal may be used for a number of things:
             <ul>
@@ -442,7 +442,7 @@ proc main() {
                 </li>
             </ul>
             <br>
-            <pre><gc>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 use std::io::println
@@ -455,11 +455,11 @@ world!")
 world!")
     println("Hello, \\x47\\x65\\x72\\x61!") // refer to an ASCII table for more details
 }
-            </gc></pre>
+            </span></gc></pre>
             <br><br>
             To get the length of a string, use the built-in <c>length</c>-procedure.
             <br>
-            <pre><gc>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 use std::io::println
@@ -467,7 +467,7 @@ use std::io::println
 proc main() {
     println(length("Hello, Gera!"))
 }
-            </gc></pre> 
+            </span></gc></pre> 
         `),
 
         page("Branching", `
@@ -478,7 +478,7 @@ proc main() {
             To simply check if some condition is met,
             use <c>case</c> followed by your condtion, <c>-></c> and the thing to do.
             <br>
-            <pre><gc>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 use std::io::println
@@ -489,11 +489,11 @@ proc main() {
         println("you should get a cat")
     }
 }
-            </gc></pre>
+            </span></gc></pre>
             <br><br>
             Use the <c>else</c>-keyword to chain conditions.
             <br>
-            <pre><gc>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 use std::io::println
@@ -506,13 +506,13 @@ proc main() {
         -> println("are you sure you don't want more?")
     else println("very nice")
 }
-            </gc></pre>
+            </span></gc></pre>
             <br><br>
             <c>case</c> can also be used to make a decision based on some value,
             by putting a block after the value (instead of <c>-></c>)
             and listing each value and its action inside of the block.
             <br>
-            <pre><gc>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 use std::io::println
@@ -534,7 +534,7 @@ proc weekday(i) {
         6 -> return "Sunday"
     } else return panic("invalid input!") // 'panic' is a built-in procedure that crashes the program (it's defined to return any value)
 }
-            </gc></pre>
+            </span></gc></pre>
         `),
 
         page("Variants", `
@@ -547,7 +547,7 @@ proc weekday(i) {
             <br>
             They may be created by using a <c>#</c> followed by the name of the variant and the value.
             <br>
-            <pre><gc>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 use std::io::println
@@ -562,12 +562,12 @@ proc create_pet(name, is_cat) {
         -> return #cat name
     return #dog name
 }
-            </gc></pre>
+            </span></gc></pre>
             <br><br>
             To get the value associated with a variant, you can use <c>case</c> to handle each possible variant.
             For this, simply write the variant name and optionally the name of the variable to put the value into.
             <br>
-            <pre><gc>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 use std::io::println
@@ -588,13 +588,13 @@ proc create_pet(name, is_cat) {
         -> return #cat name
     return #dog name
 }
-            </gc></pre>
+            </span></gc></pre>
             <br><br>
             Variants may be compared with <c>==</c> and <c>!=</c>, which will check if both the tag
             (the variant name) and their values are equal. To only check if the tag is equal,
             the built-in <c>tag_eq</c>-procedure may be used.
             <br>
-            <pre><gc>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 use std::io::println
@@ -605,7 +605,7 @@ proc main() {
     println(tag_eq(#a 5, #a 10))
     println(tag_eq(#a 5, #b 10))
 }
-            </gc></pre>
+            </span></gc></pre>
         `),
 
         page("Functions", `
@@ -616,7 +616,7 @@ proc main() {
             Functions are defined by a list of parameters in side of two <c>|</c>
             either directly followed by the resulting expression or a block of statements.
             <br>
-            <pre><gc>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 use std::io::println
@@ -629,8 +629,8 @@ proc main() {
     }
     greet()
 }
-            </gc></pre>
-            <pre><gc>
+            </span></gc></pre>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 use std::io::println
@@ -643,14 +643,14 @@ proc main() {
 proc do_math(op, a, b) {
     return op(a, b)
 }
-            </gc></pre>
+            </span></gc></pre>
             <br><br>
             Keep in mind that in contrast to procedures, which may be called with multiple different
             types as parameters for each call (as long as the type is valid), functions behave
             differently. A function can only accept one fixed type as a parameter, meaning
             the following works fine:
             <br>
-            <pre><gc>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 use std::io::println
@@ -663,10 +663,10 @@ proc main() {
     println(add(5, 10)) // this call to 'add' uses integers
     println(add(5.0, 10.0)) // this call to 'add' uses floats
 }
-            </gc></pre>
+            </span></gc></pre>
             But the following (using a function instead) is not valid:
             <br>
-            <pre><gc>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 use std::io::println
@@ -676,11 +676,11 @@ proc main() {
     println(add(5, 10)) // 'add' is now a function that adds two integers...
     println(add(5.0, 10.0)) // ...meaning we can't use it with floats.
 }
-            </gc></pre>
+            </span></gc></pre>
             <br><br>
             All defined procedures may be used as functions by simply specifying their name.
             <br>
-            <pre><gc>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 use std::io::println
@@ -692,14 +692,14 @@ proc main() {
 proc apply(f, val) {
     return f(val)
 }
-            </gc></pre>
+            </span></gc></pre>
             <br><br>
             Functions in Gera can also capture values from their environment.
             Gera functions capture by value, meaning changes to the variable
             outside of the function after the function has been created
             won't apply to the variable inside of the function, and vice-versa.
             <br>
-            <pre><gc>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 use std::io::println
@@ -710,12 +710,12 @@ proc main() {
     x = 25
     println(increment(4))
 }
-            </gc></pre>
+            </span></gc></pre>
             <br><br>
             Functions may be compared using <c>==</c> and <c>!=</c>, which will check
             if both sides are the exact same instance of that function.
             <br>
-            <pre><gc>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 use std::io::println
@@ -728,7 +728,7 @@ proc main() {
     println(a == b)
     println(a == c)
 }
-            </gc></pre>
+            </span></gc></pre>
         `),
 
         page("Objects", `
@@ -743,7 +743,7 @@ proc main() {
             <br>
             They may be created by writing a list of name-value pairs inside of braces.
             <br>
-            <pre><gc>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 proc main() {
@@ -754,11 +754,11 @@ proc main() {
     var my_other_cat = my_cat
     // 'my_other_cat' and 'my_cat' refer to the same object!
 }
-            </gc></pre>
+            </span></gc></pre>
             <br><br>
             To access an object member, simply use the good old <c>.</c>-syntax.
             <br>
-            <pre><gc>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 use std::io::println
@@ -777,13 +777,13 @@ proc main() {
 proc feed(thing) {
     thing.hunger = 0.0
 }
-            </gc></pre>
+            </span></gc></pre>
             <br><br>
             Objects may be compared using <c>==</c> and <c>!=</c>, in which case each of their
             members will be compared. To check if both are the exact same instance of an object,
             use the built-in <c>addr_eq</c>-procedure.
             <br>
-            <pre><gc>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 use std::io::println
@@ -795,7 +795,7 @@ proc main() {
     var o = { a = 5, b = 10 }
     println(addr_eq(o, o))
 }
-            </gc></pre>
+            </span></gc></pre>
         `),
 
         page("Arrays", `
@@ -806,7 +806,7 @@ proc main() {
             or you may use the built-in <c>array</c>-procedure by creating an array of a given size from
             a given value.
             <br>
-            <pre><gc>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 use std::io::println
@@ -815,11 +815,11 @@ proc main() {
     var primes = [2, 3, 5, 7, 11]
     var yippie = array("yippie!", 10)
 }
-            </gc></pre>
+            </span></gc></pre>
             <br><br>
             To get an element from an array given a certain index, use the familiar bracket syntax.
             <br>
-            <pre><gc>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 use std::io::println
@@ -830,10 +830,10 @@ proc main() {
     println(primes[1])
     println(primes[2])
 }
-            </gc></pre>
+            </span></gc></pre>
             An invalid index will make the program panic at runtime.
             <br>
-            <pre><gc>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 use std::io::println
@@ -842,11 +842,11 @@ proc main() {
     var primes = [2, 3, 5, 7, 11]
     println(primes[10])
 }
-            </gc></pre>
+            </span></gc></pre>
             <br><br>
             To get the length of an array, use the built-in <c>length</c>-procedure.
             <br>
-            <pre><gc>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 use std::io::println
@@ -855,7 +855,7 @@ proc main() {
     var primes = [2, 3, 5, 7, 11]
     println(length(primes))
 }
-            </gc></pre>
+            </span></gc></pre>
         `),
 
         page("Unit", `
@@ -868,7 +868,7 @@ proc main() {
             For example, it is often used for variants that don't have any
             value associated with them.
             <br>
-            <pre><gc>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 proc main() {
@@ -884,7 +884,7 @@ proc print_opt(o) {
         #some v -> println(v)
     }
 }
-            </gc></pre>
+            </span></gc></pre>
         `),
 
         page("Piping", `
@@ -899,7 +899,7 @@ proc print_opt(o) {
             <br>
             This can be used to chain procedure calls, making things a lot easier to read.
             <br>
-            <pre><gc>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 proc double(x) {
@@ -918,7 +918,7 @@ proc main() {
         |> double()
         |> println()
 }
-            </gc></pre>
+            </span></gc></pre>
             <br><br>
             <h>Method Calls with <c>.></c></h>
             <br><br>
@@ -933,7 +933,7 @@ proc main() {
             <br>
             This also allows it to be used in a chain together with <c>|></c>.
             <br>
-            <pre><gc>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 proc create_cat(name) { return {
@@ -953,7 +953,7 @@ proc main() {
     my_cat.hunger
         |> println()
 }
-            </gc></pre>
+            </span></gc></pre>
         `),
 
         page("Evaluation During Compilation", `
@@ -973,7 +973,7 @@ proc main() {
             This can easily be shown by making the value something computationally expensive,
             which will cause the compilation to take longer than usual.
             <br>
-            <pre><gc>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 proc fib(n) {
@@ -989,12 +989,12 @@ proc main() {
         0 -> println("it's probably going to be this one")
     }
 }
-            </gc></pre>
+            </span></gc></pre>
             <br><br>
             Another context where values are evaluated at compilation time is the value of a global
             variable:
             <br>
-            <pre><gc>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 proc fib(n) {
@@ -1009,12 +1009,12 @@ use std::io::println
 proc main() {
     println(fib30)
 }
-            </gc></pre>
+            </span></gc></pre>
             <br><br>
             If you wish for any specific expression in your program to be evaluated at compile time,
             you may use the <c>static</c>-keyword to achieve this.
             <br>
-            <pre><gc>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 proc fib(n) {
@@ -1027,8 +1027,8 @@ use std::io::println
 proc main() {
     println(static fib(30))
 }
-            </gc></pre>
-            <pre><gc>
+            </span></gc></pre>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 use std::io::println
@@ -1042,7 +1042,7 @@ proc prime(i) {
     var primes = static [2, 3, 5, 7, 11] // array is only created once
     return primes[i]
 }
-            </gc></pre>
+            </span></gc></pre>
         `),
 
         page("Conditional Compilation", `
@@ -1053,7 +1053,7 @@ proc prime(i) {
             The standard library uses this to only include specific functions on the targets
             that support them.
             <br>
-            <pre><gc>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
 use std::io::println
@@ -1066,26 +1066,189 @@ proc main() {
         println("This will run")
     }
 }
-            </gc></pre>
+            </span></gc></pre>
         `),
 
     ]),
 
-    // page("External Mappings", `Todo!`),
+    page("The Core Module", "[todo]"),
 
-    // page("The Core Module", "Todo!"),
+    pageList("The Standard Library", [
+        page("[todo]", `[todo]`),
+    ]),
 
-    // pageList("The Standard Library", [
-    //     page("Todo!", `Todo!`),
-    // ]),
+    page("External Mappings", `
+        <i>
+            Info: This page explains how your Gera code can interact with code written in another
+            language, such as Javascript or C. If this is not your goal, you may simply skip
+            this page.
+        </i>
+        <br><br>
+        <h>External Mappings</h>
+        <br><br>
+        <b>G</b>era <b>e</b>xternal <b>m</b>apping files (<c>.gem</c>) are files which contain
+        mappings to external functions written in another programming language.
+        <br>
+        Because the compiler only knows what you tell it about the external functions and variables,
+        Gera requires type annotations for external procedures and variables.
+        <br><br>
+        <h>Types</h>
+        <br><br>
+        There are a number of types to choose from, these being:
+        <ul>
+            <li>
+                <c>unit</c> - The unit type.
+                <br>
+                In C, this translates to <c>void</c>.
+                <br>
+                In JS, this translates to <c>undefined</c>.
+            </li>
+            <li>
+                <c>bool</c> - A boolean.
+                <br>
+                In C, this translates to <c>gbool</c>.
+                <br>
+                In JS, this translates to a Javascript boolean.
+            </li>
+            <li>
+                <c>int</c> - A 64-bit signed integer.
+                <br>
+                In C, this translates to <c>gint</c>.
+                <br>
+                In JS, this translates to a <c>BigInt</c>.
+            </li>
+            <li>
+                <c>float</c> - A 64-bit floating-point number.
+                <br>
+                In C, this translates to <c>gfloat</c>.
+                <br>
+                In JS, this translates to a Javascript number.
+            </li>
+            <li>
+                <c>str</c> - A string.
+                <br>
+                In C, this translates to <c>GeraString</c>.
+                <br>
+                In JS, this translates to a Javascript string.
+            </li>
+            <li>
+                <c>str</c> - A string.
+                <br>
+                In C, this translates to <c>GeraString</c>.
+                <br>
+                In JS, this translates to a Javascript string.
+            </li>
+            <li>
+                <c>[T]</c> - An array with element type <c>T</c>.
+                <br>
+                In C, this translates to <c>GeraArray</c>.
+                <br>
+                In JS, this translates to a Javascript array.
+            </li>
+            <li>
+                <c>|A1, A2, A3, ...| -> R</c> - A closure with parameter types
+                <c>A1</c>, <c>A2</c>, <c>A3</c>, ... and return type <c>R</c>.
+                <br>
+                In C, this translates to <c>GERA_CLOSURE(R, A1, A2, A3, ...)</c>
+                (or <c>GERA_CLOSURE_NOARGS(R)</c> if there are no arguments).
+                <br>
+                In JS, this translates to a Javascript object
+                with a <c>call</c>-method with the same argument types and the same return type.
+            </li>
+            <li>
+                <c>{ m1 = M1, m2 = M2, m3 = M3, ... }</c> - An object with members
+                <c>m1</c> (of type <c>M1</c>), <c>m2</c> (of type <c>M2</c>), <c>m3</c> (of type <c>M3</c>), ... .
+                <br>
+                In C, this translates to a <c>struct { M1 m1; M2 m2; M3 m3; }</c>
+                (C passes the struct directly, copying it)
+                <br>
+                In JS, this translates to a Javascript object with the same members.
+                (JS passes a reference to the object)
+            </li>
+        </ul>
+        <i>Please refer to
+        <a href="https://github.com/geralang/ccoredeps/blob/main/geratypes.h">geralang/ccoredeps/geratypes.h</a>
+        and
+        <a href="https://github.com/geralang/ccoredeps/blob/main/gera.h">geralang/ccoredeps/gera.h</a>
+        for the exact C type and macro definitions.
+        </i>
+        <br><br>
+        Complex types may be given a name using the <c>type</c>-keyword.
+        The type name may only be used below the declaration, and is only available for the file
+        it was declared in.
+        <br>
+        <pre><gc main="example::main">
+            <span ext="gem" hls="source.gem">
+type JsMath = { PI = float, E = float }
+            </span>
+            <span ext="gera" hls="source.gera">
+mod example
+
+proc main() {}
+            </span>
+        </gc></pre>
+        <br><br>
+        <h>External Variables</h>
+        <br><br>
+        External variables may be defined using the <c>var</c>-keyword,
+        followed by the full Gera module path, the variable type, <c>=</c> and the name
+        it should be mapped to.
+        <br>
+        <pre><gc main="example::main">
+            <span ext="gem" hls="source.gem">
+type JsMath = { PI = float, E = float }
+
+var js::math JsMath = Math
+            </span>
+            <span ext="gera" hls="source.gera">
+mod example
+
+use std::io::println
+
+proc main() {
+    println(js::math.PI)
+}
+            </span>
+        </gc></pre>
+        <br><br>
+        <h>External Procedures</h>
+        <br><br>
+        External procedures may be defined using the <c>proc</c>-keyword,
+        followed by the full Gera module path,
+        the parameter types in parentheses,
+        optionally <c>-></c> and the return type,
+        <c>=</c> and the name it should be mapped to.
+        <br>
+        <pre><gc main="example::main">
+            <span ext="gem" hls="source.gem">
+proc js::alert(str) = alert
+proc js::is_nan(float) -> bool = isNaN
+            </span>
+            <span ext="gera" hls="source.gera">
+mod example
+
+proc main() {
+    js::is_nan(25.0)
+        |> as_str()
+        |> js::alert()
+}
+            </span>
+        </gc></pre>
+
+    `),
 
     page("Playground", `
-        <pre><gc>
+        <pre><gc main="example::main">
+            <span ext="gem" hls="source.gem">
+// external mappings
+            </span>
+            <span ext="gera" hls="source.gera">
 mod example
 
 proc main() {
     std::io::println("Hello, world!")
 }
+            </span>
         </gc></pre>
     `),
 ];

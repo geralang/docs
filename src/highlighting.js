@@ -2,6 +2,7 @@
 import { createStarryNight } from 'https://esm.sh/@wooorm/starry-night@3?bundle';
 import { toHtml } from "https://esm.sh/hast-util-to-html@9?bundle";
 import sourceGera from './source.gera.js';
+import sourceGem from './source.gem.js';
 
 window.highlighting = {
     loaded: false,
@@ -16,10 +17,10 @@ window.highlighting = {
     highlight: null
 };
 
-const starryNight = await createStarryNight([sourceGera]);
+const starryNight = await createStarryNight([sourceGera, sourceGem]);
 
-window.highlighting.highlight = (source) => {
-    const tree = starryNight.highlight(source, "source.gera");
+window.highlighting.highlight = (source, scope) => {
+    const tree = starryNight.highlight(source, scope);
     return toHtml(tree).replaceAll("\n", "<br>");
 }
 window.highlighting.loaded = true;

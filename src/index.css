@@ -70,6 +70,7 @@ a:hover {
     position: relative;
     width: 100%;
     background-color: var(--background);
+    margin-bottom: 0.5rem;
 }
 
 .playground-editor {
@@ -135,7 +136,6 @@ a:hover {
 .playground-output {
     width: 100%;
     white-space: pre-wrap;
-    margin-top: 0.5rem;
     background-color: var(--background);
     font-size: 1rem;
     padding: 0.5rem;
@@ -214,4 +214,8 @@ a:hover {
     border-radius: 1rem;
     padding: 2rem;
     box-sizing: border-box;
+}
+
+#reader a:hover {
+    color: var(--accent-light);
 }

@@ -53,31 +53,39 @@ function renderReader() {
         gc: gc => {
             const playground = document.createElement("div");
             playground.classList.add("playground");
-            const editorWrapper = document.createElement("div");
-            editorWrapper.classList.add("playground-editor-wrapper");
-            const editor = document.createElement("textarea");
-            editor.value = gc.innerText.trim();
-            editor.classList.add("playground-editor");
-            const resizeEditor = () => {
-                editor.style.height = "2px";
-                editor.style.height = `${editor.scrollHeight}px`;
-            };
-            setTimeout(resizeEditor, 10);
-            editor.setAttribute("spellcheck", false);
-            const highlighted = document.createElement("div");
-            highlighted.classList.add("playground-editor-highlighted");
-            const highlight = () => highlighting.add_onload(() => {
-                highlighted.innerHTML = highlighting.highlight(editor.value)
-                    + "⠀"; // braille pattern blank - hack to make trailing <br> appear
-            });
-            editor.oninput = () => {
-                resizeEditor();
+            const editors = [];
+            for(const definedEditor of gc.children) {
+                const highlightingScope = definedEditor.getAttribute("hls");
+                const editorWrapper = document.createElement("div");
+                editorWrapper.classList.add("playground-editor-wrapper");
+                const editor = document.createElement("textarea");
+                editor.value = definedEditor.innerText.trim();
+                editor.classList.add("playground-editor");
+                const resizeEditor = () => {
+                    editor.style.height = "2px";
+                    editor.style.height = `${editor.scrollHeight}px`;
+                };
+                setTimeout(resizeEditor, 10);
+                editor.setAttribute("spellcheck", false);
+                const highlighted = document.createElement("div");
+                highlighted.classList.add("playground-editor-highlighted");
+                const highlight = () => highlighting.add_onload(() => {
+                    highlighted.innerHTML = highlighting.highlight(editor.value, highlightingScope)
+                        + "⠀"; // braille pattern blank - hack to make trailing <br> appear
+                });
+                editor.oninput = () => {
+                    resizeEditor();
+                    highlight();
+                };
                 highlight();
-            };
-            highlight();
-            editorWrapper.appendChild(highlighted);
-            editorWrapper.appendChild(editor);
-            playground.appendChild(editorWrapper);
+                editorWrapper.appendChild(highlighted);
+                editorWrapper.appendChild(editor);
+                playground.appendChild(editorWrapper);
+                editors.push({
+                    input: editor,
+                    ext: definedEditor.getAttribute("ext")
+                });
+            }
             const output = document.createElement("div");
             const runButton = document.createElement("button");
             runButton.classList.add("playground-run-button");
@@ -91,8 +99,14 @@ function renderReader() {
                 }
                 let files = [];
                 files.push(...stdlib.files);
-                files.push({ name: "playground.gera", content: editor.value });
-                const result = compiler.compile(files, "example::main");
+                for(let editorIdx = 0; editorIdx < editors.length; editorIdx += 1) {
+                    const editor = editors[editorIdx];
+                    files.push({
+                        name: `playground${editorIdx}.${editor.ext}`,
+                        content: editor.input.value
+                    });
+                }
+                const result = compiler.compile(files, gc.getAttribute("main"));
                 currentOutput = output;
                 if(result.success) {
                     try {
