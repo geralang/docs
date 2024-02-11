@@ -101,7 +101,7 @@ proc main() {
             followed by the name of the procedure and a list of parameters.
             A procedure may not be defined inside of another procedure.
             <br>
-            By convention, Gera procedures names are in snake case.
+            By convention, Gera procedure names are in snake case.
             <br>
             Each program starts off at the start of a procedure, this usually being
             <c>main</c>.
@@ -1078,4 +1078,14 @@ proc main() {
     // pageList("The Standard Library", [
     //     page("Todo!", `Todo!`),
     // ]),
+
+    page("Playground", `
+        <pre><gc>
+mod example
+
+proc main() {
+    std::io::println("Hello, world!")
+}
+        </gc></pre>
+    `),
 ];
