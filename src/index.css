@@ -1,5 +1,5 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@600&display=swap');
 @import url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,400;0,700;1,400;1,700&display=swap");
 
 :root {
@@ -41,9 +41,14 @@ a:hover {
 .codespan {
     background-color: var(--background);
     color: var(--text);
-    padding: 0.15rem;
     border-radius: 0.25rem;
-    font-family: "Fira Code", monospace;
+    font-family: "Noto Sans Mono", monospace;
+    outline: 0.1rem solid var(--text);
+}
+
+*::selection {
+    color: var(--background);
+    background-color: var(--text);
 }
 
 .heading {
@@ -57,7 +62,7 @@ a:hover {
 }
 
 .playground *::selection {
-    background-color: var(--accent-dark);
+    background-color: var(--accent-light);
     color: var(--text);
 }
 
@@ -65,7 +70,6 @@ a:hover {
     position: relative;
     width: 100%;
     background-color: var(--background);
-    border-radius: 0.5rem;
 }
 
 .playground-editor {
@@ -77,7 +81,7 @@ a:hover {
     overflow: hidden;
     outline: none;
     border: none;
-    font-family: "Fira Code", monospace;
+    font-family: "Noto Sans Mono", monospace;
     background-color: rgba(0, 0, 0, 0);
     color: rgba(0, 0, 0, 0);
     min-height: 5rem;
@@ -87,6 +91,12 @@ a:hover {
     caret-color: var(--accent-light);
     font-size: 1rem;
     white-space: pre-wrap;
+    border-radius: 0.5rem;
+    outline: 0.1rem solid var(--text);
+}
+
+.playground-editor:focus {
+    outline: 0.25rem solid var(--accent-light);
 }
 
 .playground-editor-highlighted {
@@ -94,7 +104,7 @@ a:hover {
     width: 100%;
     box-sizing: border-box;
     padding: 1rem;
-    font-family: "Fira Code", monospace;
+    font-family: "Noto Sans Mono", monospace;
     overflow-wrap: break-word;
     line-height: 1.2rem;
     font-size: 1rem;
@@ -112,7 +122,7 @@ a:hover {
     padding: 0.5rem;
     border-radius: 0.5rem;
     background-color: var(--text);
-    color: var(--accent-dark);
+    color: var(--background);
     z-index: 2;
 }
 
@@ -133,6 +143,7 @@ a:hover {
     border-radius: 0.5rem;
     max-height: 20rem;
     overflow-y: auto;
+    font-family: "Noto Sans Mono", monospace;
 }
 
 .playground-output:empty {
@@ -144,7 +155,7 @@ a:hover {
 }
 
 #navigator {
-    width: 50vmin;
+    width: 20rem;
     height: 100vh;
     background-color: var(--accent-dark);
     border-radius: 0px 1rem 1rem 0px;
@@ -199,7 +210,7 @@ a:hover {
     transform: translate(-50%, 0%);
     width: min(100vw, 45vmax);
     min-height: 100%;
-    background-color: var(--accent-light);
+    background-color: var(--background);
     border-radius: 1rem;
     padding: 2rem;
     box-sizing: border-box;

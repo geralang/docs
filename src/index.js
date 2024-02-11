@@ -41,13 +41,13 @@ function renderReader() {
         h: h => {
             const heading = document.createElement("span");
             heading.classList.add("heading");
-            heading.innerText = h.innerText;
+            heading.innerHTML = h.innerHTML;
             return heading;
         },
         c: c => {
             const codespan = document.createElement("span");
             codespan.classList.add("codespan");
-            codespan.innerText = c.innerText;
+            codespan.innerHTML = c.innerHTML;
             return codespan;
         },
         gc: gc => {
@@ -93,8 +93,8 @@ function renderReader() {
                 files.push(...stdlib.files);
                 files.push({ name: "playground.gera", content: editor.value });
                 const result = compiler.compile(files, "example::main");
+                currentOutput = output;
                 if(result.success) {
-                    currentOutput = output;
                     try {
                         eval(stdlib.linked_js + result.content);
                     } catch(e) {
