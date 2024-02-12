@@ -39,16 +39,14 @@ a:hover {
 }
 
 .codespan {
-    background-color: var(--background);
-    color: var(--text);
+    background-color: var(--text);
+    color: var(--background);
     border-radius: 0.25rem;
     font-family: "Noto Sans Mono", monospace;
-    outline: 0.1rem solid var(--text);
 }
 
 *::selection {
-    color: var(--background);
-    background-color: var(--text);
+    background-color: var(--accent-light);
 }
 
 .heading {

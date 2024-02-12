@@ -1163,18 +1163,18 @@ proc main() {
         <br>
         All procedures in this module are imported by default (as if one did <c>use core::*</c>),
         meaning instead of writing <c>core::panic</c>, one can simply write <c>panic</c>.
-        <br><br>
+        <br><br><br>
         <sh><c>range(start, end)</c></sh>
-        <br>
+        <br><br>
         <b>Gera provides syntax sugar for this procedure.
         <c>start..end</c> will be replaced with <c>range(start, end)</c>.</b>
         <br>
         Returns an iterator over all integers starting at the integer <c>start</c>
         up to (excluding) the integer <c>end</c>. This also works if <c>start > end</c>,
         in which case it will behave as if <c>start</c> and <c>end</c> have been swapped.
-        <br><br>
+        <br><br><br>
         <sh><c>range_incl(start, end)</c></sh>
-        <br>
+        <br><br>
         <b>Gera provides syntax sugar for this procedure.
         <c>start..=end</c> will be replaced with <c>range_incl(start, end)</c>.</b>
         <br>
@@ -1182,90 +1182,90 @@ proc main() {
         up to (including) the integer <c>end</c>.
         This also works if <c>start > end</c>, in which case it will behave
         as if <c>start</c> and <c>end</c> have been swapped.
-        <br><br>
+        <br><br><br>
         <sh><c>addr_eq(a, b)</c></sh>
-        <br>
+        <br><br>
         Takes two objects of the same type <c>a</c> and <c>b</c>
         and returns a boolean representing if the addresses of the object match
         (if the passed references belong to the same object).
-        <br><br>
+        <br><br><br>
         <sh><c>tag_eq(a, b)</c></sh>
-        <br>
+        <br><br>
         Takes two variants <c>a</c> and <c>b</c>
         and returns a boolean representing if the tags of the variants match.
-        <br><br>
+        <br><br><br>
         <sh><c>length(thing)</c></sh>
-        <br>
+        <br><br>
         Takes a string or array <c>thing</c>
         and returns the number of elements (if <c>thing</c> is an array)
         or the number of code points (if <c>thing</c> is a string) as an integer.
-        <br><br>
+        <br><br><br>
         <sh><c>array(value, size)</c></sh>
-        <br>
-        Creates a new array with <c>size</c> elements by repeating <c>value</c> <c>size</c> times.
         <br><br>
+        Creates a new array with <c>size</c> elements by repeating <c>value</c> <c>size</c> times.
+        <br><br><br>
         <sh><c>exhaust(iter)</c></sh>
-        <br>
+        <br><br>
         Takes a function <c>iter</c>, which takes no parameters
         and returns either the variant <c>#next</c> or <c>#end</c> (any values),
         and calls that function over and over again until it returns <c>#end</c>.
-        <br><br>
+        <br><br><br>
         <sh><c>panic(message)</c></sh>
-        <br>
+        <br><br>
         Crashes the program, displaying the given error reason <c>message</c>.
         This error is irrecoverable, so it should only be used for situations
         where the programmer did something wrong.
         For recoverable errors, use <i>results</i> instead.
-        <br><br>
+        <br><br><br>
         <sh><c>as_str(thing)</c></sh>
-        <br>
-        Returns the string representation of the given value <c>thing</c>.
         <br><br>
+        Returns the string representation of the given value <c>thing</c>.
+        <br><br><br>
         <sh><c>as_int(number)</c></sh>
-        <br>
+        <br><br>
         Takes an integer or float <c>number</c>
         and returns the number as an integer.
         When a float is passed, the float will be rounded down.
-        <br><br>
+        <br><br><br>
         <sh><c>as_flt(number)</c></sh>
-        <br>
-        Takes an integer or float <c>number</c> and returns the number as a float.
         <br><br>
+        Takes an integer or float <c>number</c> and returns the number as a float.
+        <br><br><br>
         <sh><c>substring(source, start, end)</c></sh>
-        <br>
+        <br><br>
         Returns a part of the string <c>source</c>, starting at the code point at index <c>start</c>
         up to (excluding) the code point at index <c>end</c>.
         If <c>start</c> or <c>end</c> are negative,
         the length of <c>source</c> will be added to them.
-        <br><br>
+        <br><br><br>
         <sh><c>concat(string_a, string_b)</c></sh>
-        <br>
-        Returns a new string by appending <c>string_b</c> to the end of <c>string_a</c>.
         <br><br>
+        Returns a new string by appending <c>string_b</c> to the end of <c>string_a</c>.
+        <br><br><br>
         <sh><c>parse_int(source)</c></sh>
-        <br>
+        <br><br>
         Attempts to parse <c>source</c> as an integer.
         If successful, the variant <c>#some</c>
         (where the value is the parsed integer) will be returned.
         If unsuccessful, the variant <c>#none</c> (where the value is <c>unit</c>) will be returned.
-        <br><br>
+        <br><br><br>
         <sh><c>parse_flt(source)</c></sh>
-        <br>
+        <br><br>
         Attempts to parse <c>source</c> as a float.
         If successful, the variant <c>#some</c>
         (where the value is the parsed float) will be returned.
         If unsuccessful, the variant <c>#none</c> (where the value is <c>unit</c>) will be returned.
-        <br><br>
+        <br><br><br>
         <sh><c>string(repeated, times)</c></sh>
-        <br>
-        Creates a new string by repeating the string <c>repeated</c> <c>times</c> times.
         <br><br>
+        Creates a new string by repeating the string <c>repeated</c> <c>times</c> times.
+        <br><br><br>
         <sh><c>hash(value)</c></sh>
-        <br>
+        <br><br>
         Creates a 64-bit hash of the given <c>value</c>.
         This procedure will hash references to objects, arrays and functions,
         not the values they hold.
-        This means that <c>hash(x) == hash(y)<c> will only be true
+        This means that <c>hash(x) == hash(y)</c> will only be true
         for objects and arrays where <c>addr_eq(x, y)</c>.
     `),
 
