@@ -44,6 +44,12 @@ function renderReader() {
             heading.innerHTML = h.innerHTML;
             return heading;
         },
+        sh: sh => {
+            const heading = document.createElement("span");
+            heading.classList.add("subheading");
+            heading.innerHTML = sh.innerHTML;
+            return heading;
+        },
         c: c => {
             const codespan = document.createElement("span");
             codespan.classList.add("codespan");
@@ -159,6 +165,8 @@ function renderReader() {
 function loadPage(content) {
     const reader = document.getElementById("reader");
     reader.innerHTML = content;
+    const readerWrapper = document.getElementById("reader-wrapper");
+    readerWrapper.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 load_compiler();

@@ -209,30 +209,19 @@ proc main() {
             The full path of the module is defined at the top of the file,
             using the <c>mod</c>-keyword.
             <br>
+            The module path is independent of the file's location, but there may never
+            be two or more files sharing the same module path.
+            <br>
             In the examples provided in the documentation,
             this will almost always simply be <c>example</c>, but a more
             complex path may be used, such as <c>std::io</c> or <c>foo::bar::baz</c>.
             <br>
-            The <c>::</c> is used to denote a submodule,
-            meaning <c>std::io</c> is a submodule of the module <c>std</c>.
+            The <c>::</c> is used to denote that something is part of a module,
+            meaning that <c>std::io</c> is a submodule of the module <c>std</c>,
+            and that <c>std::io::println</c> is a procedure called <c>println</c>
+            in the module <c>std::io</c>.
             <br><br>
-            By default, all procedures and global variables in all modules
-            are private, meaning other modules may not access them.
-            <br>
-            To allow other modules to access a procedure or variable,
-            use the <c>pub</c>-keyword followed by the thing you want to be public.
-            <br>
-            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
-mod example
-
-proc main() {}
-
-pub proc add(x, y) {
-    return x + y
-}
-            </span></gc></pre>
-            <br><br>
-            To access a procedure or variable from another module,
+            To access a procedure or variable from some module,
             simply specify its full module path,
             such as <c>std::io::println</c> or <c>std::math::PI</c>.
             <br>
@@ -244,7 +233,47 @@ proc main() {
 }
             </span></gc></pre>
             <br><br>
-            However, always typing out the full path can become fairly dreadful.
+            By default, all procedures and global variables in all modules
+            are private, making the following is invalid:
+            <br>
+            <pre><gc main="example::bar::main">
+                <span ext="gera" hls="source.gera">
+mod example::foo
+
+proc add(x, y) {
+    return x + y
+}
+                </span>
+                <span ext="gera" hls="source.gera">
+mod example::bar
+
+proc main() {
+    std::io::println(example::foo::add(5, 10))
+}
+                </span>
+            </gc></pre>            
+            <br>
+            To allow other modules to access a procedure or variable,
+            use the <c>pub</c>-keyword followed by the thing you want to be public:
+            <br>
+            <pre><gc main="example::bar::main">
+                <span ext="gera" hls="source.gera">
+mod example::foo
+
+pub proc add(x, y) {
+    return x + y
+}
+                </span>
+                <span ext="gera" hls="source.gera">
+mod example::bar
+
+proc main() {
+    std::io::println(example::foo::add(5, 10))
+}
+                </span>
+            </gc></pre>      
+            <br><br>
+            Always typing out the full path to access something can become fairly dreadful.
             <br>
             You can use the <c>use</c>-keyword to shorten things.
             Writing <c>use foo::bar::baz</c> will make <c>foo::bar::baz</c>
@@ -467,7 +496,47 @@ use std::io::println
 proc main() {
     println(length("Hello, Gera!"))
 }
-            </span></gc></pre> 
+            </span></gc></pre>
+            <br><br>
+            Append one string to the end of another by using the built-in <c>concat</c>-function.
+            <br>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
+mod example
+
+use std::io::println
+
+proc main() {
+    println(concat("Hello, ", "Gera!"))
+}
+            </span></gc></pre>
+            <br><br>
+            Get part of a string by using the built-in <c>substring</c>-function.
+            <br>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
+mod example
+
+use std::io::println
+
+proc main() {
+    println(substring("Don't use Gera! It's really bad!", 6, 15))
+}
+            </span></gc></pre>
+            <br><br>
+            Strings can be compared using <c>==</c> and <c>!=</c>, in which case
+            the lengths and contents of the strings will simply be compared.
+            <br>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
+mod example
+
+use std::io::println
+
+proc main() {
+    var s = "I like cats"
+    println(s == s)
+    println("Gera" == "Gera")
+    println("foo" == "bar")
+}
+            </span></gc></pre>
         `),
 
         page("Branching", `
@@ -885,12 +954,26 @@ proc print_opt(o) {
     }
 }
             </span></gc></pre>
+            <br><br>
+            <c>unit</c> can be compared using <c>==</c> (which will always result in <c>true</c>)
+            and <c>!=</c> (which will always result in <c>false</c>):
+            <br>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
+mod example
+
+use std::io::println
+
+proc main() {
+    println(unit == unit)
+    println(unit != unit)
+}
+            </span></gc></pre>
         `),
 
         page("Piping", `
             <h>Piping</h>
             <br><br><br>
-            <h>Procedure Call Piping with <c>|></c></h>
+            <h>Procedure Call Piping with <c>|></c></sh>
             <br><br>
             Deeply nested procedure calls can get pretty ugly fairly quickly.
             Gera provides syntactic sugar to help with this.
@@ -920,7 +1003,7 @@ proc main() {
 }
             </span></gc></pre>
             <br><br>
-            <h>Method Calls with <c>.></c></h>
+            <h>Method Calls with <c>.></c></sh>
             <br><br>
             "Method" refers to a member of an object that stores a function.
             This function accepts the thing its called as the first parameter,
@@ -1071,7 +1154,120 @@ proc main() {
 
     ]),
 
-    page("The Core Module", "[todo]"),
+    page("The Core Module", `
+        <h>The <c>core</c>-module</h>
+        <br><br>
+        The core module contains procedures that are cruicial when working with Gera.
+        Many of the procedures in this module have already been mentioned
+        in previous parts of the documentation.
+        <br>
+        All procedures in this module are imported by default (as if one did <c>use core::*</c>),
+        meaning instead of writing <c>core::panic</c>, one can simply write <c>panic</c>.
+        <br><br>
+        <sh><c>range(start, end)</c></sh>
+        <br>
+        <b>Gera provides syntax sugar for this procedure.
+        <c>start..end</c> will be replaced with <c>range(start, end)</c>.</b>
+        <br>
+        Returns an iterator over all integers starting at the integer <c>start</c>
+        up to (excluding) the integer <c>end</c>. This also works if <c>start > end</c>,
+        in which case it will behave as if <c>start</c> and <c>end</c> have been swapped.
+        <br><br>
+        <sh><c>range_incl(start, end)</c></sh>
+        <br>
+        <b>Gera provides syntax sugar for this procedure.
+        <c>start..=end</c> will be replaced with <c>range_incl(start, end)</c>.</b>
+        <br>
+        Returns an iterator over all integers starting at the integer <c>start</c>
+        up to (including) the integer <c>end</c>.
+        This also works if <c>start > end</c>, in which case it will behave
+        as if <c>start</c> and <c>end</c> have been swapped.
+        <br><br>
+        <sh><c>addr_eq(a, b)</c></sh>
+        <br>
+        Takes two objects of the same type <c>a</c> and <c>b</c>
+        and returns a boolean representing if the addresses of the object match
+        (if the passed references belong to the same object).
+        <br><br>
+        <sh><c>tag_eq(a, b)</c></sh>
+        <br>
+        Takes two variants <c>a</c> and <c>b</c>
+        and returns a boolean representing if the tags of the variants match.
+        <br><br>
+        <sh><c>length(thing)</c></sh>
+        <br>
+        Takes a string or array <c>thing</c>
+        and returns the number of elements (if <c>thing</c> is an array)
+        or the number of code points (if <c>thing</c> is a string) as an integer.
+        <br><br>
+        <sh><c>array(value, size)</c></sh>
+        <br>
+        Creates a new array with <c>size</c> elements by repeating <c>value</c> <c>size</c> times.
+        <br><br>
+        <sh><c>exhaust(iter)</c></sh>
+        <br>
+        Takes a function <c>iter</c>, which takes no parameters
+        and returns either the variant <c>#next</c> or <c>#end</c> (any values),
+        and calls that function over and over again until it returns <c>#end</c>.
+        <br><br>
+        <sh><c>panic(message)</c></sh>
+        <br>
+        Crashes the program, displaying the given error reason <c>message</c>.
+        This error is irrecoverable, so it should only be used for situations
+        where the programmer did something wrong.
+        For recoverable errors, use <i>results</i> instead.
+        <br><br>
+        <sh><c>as_str(thing)</c></sh>
+        <br>
+        Returns the string representation of the given value <c>thing</c>.
+        <br><br>
+        <sh><c>as_int(number)</c></sh>
+        <br>
+        Takes an integer or float <c>number</c>
+        and returns the number as an integer.
+        When a float is passed, the float will be rounded down.
+        <br><br>
+        <sh><c>as_flt(number)</c></sh>
+        <br>
+        Takes an integer or float <c>number</c> and returns the number as a float.
+        <br><br>
+        <sh><c>substring(source, start, end)</c></sh>
+        <br>
+        Returns a part of the string <c>source</c>, starting at the code point at index <c>start</c>
+        up to (excluding) the code point at index <c>end</c>.
+        If <c>start</c> or <c>end</c> are negative,
+        the length of <c>source</c> will be added to them.
+        <br><br>
+        <sh><c>concat(string_a, string_b)</c></sh>
+        <br>
+        Returns a new string by appending <c>string_b</c> to the end of <c>string_a</c>.
+        <br><br>
+        <sh><c>parse_int(source)</c></sh>
+        <br>
+        Attempts to parse <c>source</c> as an integer.
+        If successful, the variant <c>#some</c>
+        (where the value is the parsed integer) will be returned.
+        If unsuccessful, the variant <c>#none</c> (where the value is <c>unit</c>) will be returned.
+        <br><br>
+        <sh><c>parse_flt(source)</c></sh>
+        <br>
+        Attempts to parse <c>source</c> as a float.
+        If successful, the variant <c>#some</c>
+        (where the value is the parsed float) will be returned.
+        If unsuccessful, the variant <c>#none</c> (where the value is <c>unit</c>) will be returned.
+        <br><br>
+        <sh><c>string(repeated, times)</c></sh>
+        <br>
+        Creates a new string by repeating the string <c>repeated</c> <c>times</c> times.
+        <br><br>
+        <sh><c>hash(value)</c></sh>
+        <br>
+        Creates a 64-bit hash of the given <c>value</c>.
+        This procedure will hash references to objects, arrays and functions,
+        not the values they hold.
+        This means that <c>hash(x) == hash(y)<c> will only be true
+        for objects and arrays where <c>addr_eq(x, y)</c>.
+    `),
 
     pageList("The Standard Library", [
         page("[todo]", `[todo]`),
@@ -1123,13 +1319,6 @@ proc main() {
                 In C, this translates to <c>gfloat</c>.
                 <br>
                 In JS, this translates to a Javascript number.
-            </li>
-            <li>
-                <c>str</c> - A string.
-                <br>
-                In C, this translates to <c>GeraString</c>.
-                <br>
-                In JS, this translates to a Javascript string.
             </li>
             <li>
                 <c>str</c> - A string.
