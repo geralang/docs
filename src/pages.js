@@ -1155,7 +1155,7 @@ proc main() {
     ]),
 
     page("The Core Module", `
-        <h>The <c>core</c>-module</h>
+        <h>The <c>core</c>-Module</h>
         <br><br>
         The core module contains procedures that are cruicial when working with Gera.
         Many of the procedures in this module have already been mentioned
@@ -1270,7 +1270,312 @@ proc main() {
     `),
 
     pageList("The Standard Library", [
-        page("[todo]", `[todo]`),
+        
+        page("The Base Module", `
+            <h>The <c>std</c>-Module</h>
+            <br><br>
+            This is the module that contains all the standard library sub-modules.
+            <br>
+            It is also home to a few procedures of its own.
+            <br><br><br>
+            <sh><c>if_else(cond, if_true, if_false)</c></sh>
+            <br><br>
+            Returns <c>if_true</c> if <c>cond</c> is <c>true</c>, and otherwise
+            returns <c>if_false</c>.
+            <br><br><br>
+            <sh><c>if_else_lazy(cond, if_true, if_false)</c></sh>
+            <br><br>
+            Calls <c>if_true</c> without arguments and returns the returned value
+            if <c>cond</c> is <c>true</c>,
+            and otherwise calls <c>if_false</c> without arguments
+            and returns the returned value.
+        `),
+
+        page("Array Utilities", `
+            <h>The <c>std::arr</c>-Module</h>
+            <br><br>
+            This module contains utilities for working with arrays.
+            <br><br><br>
+            <sh><c>subarray(a, start, end)</c></sh>
+            <br><br>
+            Returns a part of the array <c>a</c>,
+            starting at the index <c>start</c> and including all elements
+            up to the index (not including) <c>end</c>. If <c>start</c> or
+            <c>end</c> are negative, the length of <c>a</c> is added to them.
+            <br><br><br>
+            <sh><c>subarray_until(a, end)</c></sh>
+            <br><br>
+            Returns a part of the array <c>a</c>, including all elements
+            up to the index (not including) <c>end_index</c>. If <c>end_index</c> is negative,
+            the length of <c>a</c> is added to it. 
+            <br><br><br>
+            <sh><c>subarray_after(a, end)</c></sh>
+            <br><br>
+            Returns a part of the array <c>a</c>, including all elements
+            at and after the index <c>start_index</c>. If <c>start_index</c> is negative,
+            the length of <c>a</c> is added to it.
+            <br><br><br>
+            <sh><c>concat(a, b)</c></sh>
+            <br><br>
+            Creates a new array by appending all elements of the array <c>b</c> to the end
+            of the array <c>a</c>.
+            <br><br><br>
+            <sh><c>clone(a)</c></sh>
+            <br><br>
+            Creates a shallow copy of the array <c>a</c>.
+            <br><br><br>
+            <sh><c>reversed(a)</c></sh>
+            <br><br>
+            Creates a new array by reversing the order of the elements in <c>a</c>.
+            <br><br><br>
+            <sh><c>iter(a)</c></sh>
+            <br><br>
+            Creates a new iterator over the elements in <c>a</c>.
+            <br><br><br>
+            <sh><c>collect(i)</c></sh>
+            <br><br>
+            Collects all the elements from the iterator <c>i</c> into a new array.
+            Make sure the passed iterator is finite if you want this procedure to return
+            before the heat death of the universe.
+            <br><br><br>
+            <sh><c>sorted(a, comp)</c></sh>
+            <br><br>
+            Uses <c>std::sort::quicksort</c> to return a new sorted shallow copy <c>a</c>
+            sorted according to the comparison function <c>comp</c>
+            (use <c>std::sort::ascending(f)</c> or <c>std::sort::descending(f)</c>,
+            where <c>f</c> is a function that takes an element and returns an integer or float
+            to sort according to).
+        `),
+
+        page("Bitwise Operations", `
+            <h>The <c>std::bw</c>-Module</h>
+            <br>
+            <i>C and Javascript only</i>
+            <br><br>
+            This module contains procedures for bitwise operations.
+            <br><br><br>
+            <sh><c>and(x, y)</c></sh>
+            <br><br>
+            For each bit in the integers <c>x</c> and <c>y</c>, the resulting integer's bit
+            is <c>1</c> if both the corresponding bit in <c>x</c> and <c>y</c> are <c>1</c>.
+            <br><br><br>
+            <sh><c>or(x, y)</c></sh>
+            <br><br>
+            For each bit in the integers <c>x</c> and <c>y</c>, the resulting integer's bit
+            is <c>1</c> if either a corresponding bit in <c>x</c> or <c>y</c> is <c>1</c>.
+            <br><br><br>
+            <sh><c>xor(x, y)</c></sh>
+            <br><br>
+            For each bit in the integers <c>x</c> and <c>y</c>, the resulting integer's bit
+            is <c>1</c> if the corresponding bits in <c>x</c> and <c>y</c> are not the same.
+            <br><br><br>
+            <sh><c>not(x)</c></sh>
+            <br><br>
+            For each bit in the integer <c>x</c>, the resulting integer's bit
+            is <c>1</c> if the corresponding bit in <c>x</c> is <c>0</c>.
+            <br><br><br>
+            <sh><c>lshift(x, b)</c></sh>
+            <br><br>
+            Shifts the bits in the integer <c>x</c> by <c>b</c> bits to the left.
+            The leftmost bits fall off, and newly inserted bits are <c>0</c>.
+            <br><br><br>
+            <sh><c>rshift(x, b)</c></sh>
+            <br><br>
+            <b>Preserves the sign! For zero-fill shifting, use <c>std::bw::urshift</c>.</b>
+            <br>
+            Shifts the bits in the integer <c>x</c> by <c>b</c> bits to the right.
+            The rightmost bits fall off, and newly inserted bits are copies of the leftmost bit.
+            <br><br><br>
+            <sh><c>urshift(x, b)</c></sh>
+            <br><br>
+            <b>Does not preserve the sign!
+            For sign-preserving shifting, use <c>std::bw::rshift</c>.</b>
+            <br>
+            Shifts the bits in the integer <c>x</c> by <c>b</c> bits to the right.
+            The rightmost bits fall off, and newly inserted bits are <c>0</c>.
+        `),
+
+        pageList("Collections", [
+
+            page("Hash Maps", `
+                <h>The <c>std::coll::HashMap</c>-Module</h>
+                <br><br>
+                This module contains a simple hash map implementation.
+                It provides the following procedures for creating them:
+                <br><br><br>
+                <sh><c>new()</c></sh>
+                <br><br>
+                Creates a new empty hash map.
+                <br><br><br>
+                <sh><c>collect(from_iter)</c></sh>
+                <br><br>
+                Collects all the items from the iterator <c>from_iter</c> into a new hash map.
+                Expects the iterator items to be of type <c>{ key = K, value = V }</c>,
+                where <c>K</c> is the type of the map keys,
+                and <c>V</c> is the type of the map values.
+                Make sure the passed iterator is finite if you want this procedure to return
+                before the release of Portal 3.
+                <br><br><br>
+                <h>Properties</h>
+                <br><br>
+                A hash map created by <c>new</c> and <c>collect</c> has the following properties:
+                <br><br><br>
+                <sh><c>hasher</c></sh>
+                <br><br>
+                A function that takes a map key and returns its hash.
+                Unless overwritten, this is <c>core::hash</c>.
+                <br><br><br>
+                <sh><c>load_factor</c></sh>
+                <br><br>
+                A float used to determine when the map should grow.
+                The map will grow if <c>size > bucket_count * load_factor</c>.
+                <br><br><br>
+                <sh><c>size</c></sh>
+                <br><br>
+                Used to keep track of the number of key-value pairs in the map.
+                <br><br><br>
+                <sh><c>set(self, key, value)</c></sh>
+                <br><br>
+                A method that associates the value <c>value</c> with the key <c>key</c>.
+                If there is already a value associated with <c>key</c>, it will be replaced.
+                Returns <c>self</c>.
+                <br><br><br>
+                <sh><c>at(self, key)</c></sh>
+                <br><br>
+                A method that optionally returns the value assotiated with <c>key</c>.
+                <br><br><br>
+                <sh><c>has(self, key)</c></sh>
+                <br><br>
+                A method that returns a boolean representing if there is any value
+                associated with <c>key</c>.
+                <br><br><br>
+                <sh><c>remove(self, key)</c></sh>
+                <br><br>
+                A method that removes the value associated with <c>key</c>,
+                should there be any. Optionally returns the removed value.
+                <br><br><br>
+                <sh><c>iter(self)</c></sh>
+                <br><br>
+                A method that returns a new iterator over the key-value pairs
+                inside of <c>self</c>. Each item in the iterator is of type
+                <c>{ key = K, value = V }</c>, where <c>K</c> is a key
+                and <c>V</c> is the value associated with it.
+                <br><br><br>
+                <sh><c>iter_keys(self)</c></sh>
+                <br><br>
+                A method that returns a new iterator over the keys inside of <c>self</c>.
+                <br><br><br>
+                <sh><c>iter_values(self)</c></sh>
+                <br><br>
+                A method that returns a new iterator over the values inside of <c>self</c>.
+                <br><br><br>
+                <sh><c>clone(self)</c></sh>
+                <br><br>
+                A method that returns a shallow copy of <c>self</c>.
+            `),
+
+            page("Vectors", `
+                <h>The <c>std::coll::Vector</c>-Module</h>
+                <br><br>
+                This module contains a simple vector implementation.
+                It provides the following procedures for creating them:
+                <br><br><br>
+                <sh><c>new()</c></sh>
+                <br><br>
+                Creates a new empty vector.
+                <br><br><br>
+                <sh><c>collect(from_iter)</c></sh>
+                <br><br>
+                Collects all the items from the iterator <c>from_iter</c> into a new vector.
+                Make sure the passed iterator is finite if you want this procedure to return
+                before the release of Grand Theft Auto VI.
+                <br><br><br>
+                <h>Properties</h>
+                <br><br>
+                A vector created by <c>new</c> and <c>collect</c> has the following properties:
+                <br><br><br>
+                <sh><c>size</c></sh>
+                <br><br>
+                Used to keep track of the number of elements in the vector.
+                <br><br><br>
+                <sh><c>push(self, item)</c></sh>
+                <br><br>
+                A method that pushes the item <c>item</c> to the end of the vector.
+                Returns <c>self</c>.
+                <br><br><br>
+                <sh><c>append_arr(self, appended_array)</c></sh>
+                <br><br>
+                A method that appends all items in the array <c>appended_array</c>
+                to the end of the vector.
+                Returns <c>self</c>.
+                <br><br><br>
+                <sh><c>append_vec(self, appended_vector)</c></sh>
+                <br><br>
+                A method that appends all items in the vector <c>appended_vector</c>
+                to the end of the vector.
+                Returns <c>self</c>.
+                <br><br><br>
+                <sh><c>insert(self, index, item)</c></sh>
+                <br><br>
+                A method that inserts the item <c>item</c> into the vector,
+                making it so it will be at the index <c>index</c>.
+                All elements previously at and after <c>index</c> will have 1
+                added to their index.
+                If <c>index</c> is negative, the size of the vector will be added to <c>index</c>.
+                Returns <c>self</c>.
+                <br><br><br>
+                <sh><c>pop(self)</c></sh>
+                <br><br>
+                A method that tries to remove the last element from the vector,
+                optionally returning it if there is one.
+                <br><br><br>
+                <sh><c>remove(self, index)</c></sh>
+                <br><br>
+                A method that removes the element at index <c>index</c>.
+                All elements previously after <c>index</c> will have 1
+                subtracted their index.
+                If <c>index</c> is negative, the size of the vector will be added to <c>index</c>.
+                Returns the removed element.
+                <br><br><br>
+                <sh><c>at(self, index)</c></sh>
+                <br><br>
+                A method that returns the element at index <c>index</c>.
+                If <c>index</c> is negative, the size of the vector will be added to <c>index</c>.
+                <br><br><br>
+                <sh><c>set(self, index, value)</c></sh>
+                <br><br>
+                A method that replaces the element at index <c>index</c> with <c>value</c>.
+                If <c>index</c> is negative, the size of the vector will be added to <c>index</c>.
+                Returns <c>self</c>.
+                <br><br><br>
+                <sh><c>clone(self)</c></sh>
+                <br><br>
+                A method that returns a shallow copy of <c>self</c>.
+                <br><br><br>
+                <sh><c>reverse(self)</c></sh>
+                <br><br>
+                A method that reverses the order of the elements in <c>self</c>,
+                modifying <c>self</c>. Returns <c>self</c>.
+                <br><br><br>
+                <sh><c>iter(self)</c></sh>
+                <br><br>
+                A method that returns an iterator over all the elements in <c>self</c>.
+                <br><br><br>
+                <sh><c>as_array(self)</c></sh>
+                <br><br>
+                A method that returns a shallow copy of <c>self</c> as an array.
+                <br><br><br>
+                <sh><c>sort(self, comp)</c></sh>
+                <br><br>
+                Uses <c>std::sort::quicksort</c> to sort <c>self</c>, modifying <c>self</c>.
+                The elements are sorted according to the comparison function <c>comp</c>
+                (use <c>std::sort::ascending(f)</c> or <c>std::sort::descending(f)</c>,
+                where <c>f</c> is a function that takes an element and returns an integer or float
+                to sort according to).
+            `),
+
+        ]),
+
     ]),
 
     page("External Mappings", `

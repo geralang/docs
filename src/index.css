@@ -43,6 +43,8 @@ a:hover {
     color: var(--background);
     border-radius: 0.25rem;
     font-family: "Noto Sans Mono", monospace;
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
 }
 
 *::selection {
