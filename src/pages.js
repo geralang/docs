@@ -1576,6 +1576,557 @@ proc main() {
 
         ]),
 
+        pageList("Concurrency", [
+
+            page("Mutexes", `
+                <h>The <c>std::conc::Mutex</c>-Module</h>
+                <br>
+                <i>C only</i>
+                <br><br>
+                This module contains a simple mutex implementation.
+                <br><br><br>
+                <sh><c>new()</c></sh>
+                <br><br>
+                Creates a new mutex.
+                <br><br><br>
+                <h>Properties</h>
+                <br><br>
+                A mutex created by <c>new</c> has the following properties:
+                <br><br><br>
+                <sh><c>try_lock(self)</c></sh>
+                <br><br>
+                A method that attempts to lock the Mutex for the calling thread.
+                If the mutex is already locked, <c>false</c> is returned immediately.
+                If the mutex is not locked, the mutex will be locked
+                and <c>true</c> will be returned.
+                <br><br><br>
+                <sh><c>lock(self)</c></sh>
+                <br><br>
+                A method that locks the Mutex for the calling thread.
+                If the thread is already locked, the call will block until
+                the mutex is free again.
+                Returns <c>self</c>.
+                <br><br><br>
+                <sh><c>is_locked(self)</c></sh>
+                <br><br>
+                A method that returns <c>true</c> if <c>self</c> is locked by any
+                thread, and otherwise <c>false</c>.
+                <br><br><br>
+                <sh><c>unlock(self)</c></sh>
+                <br><br>
+                A method that unlocks the mutex.
+                Assumes that the mutex has been locked by the calling thread.
+            `),
+
+            page("Threads", `
+                <h>The <c>std::conc::Thread</c>-Module</h>
+                <br>
+                <i>C only</i>
+                <br><br>
+                This module contains a simple thread implementation.
+                <br><br><br>
+                <sh><c>new(task)</c></sh>
+                <br><br>
+                Creates a new thread, executing the given function <c>task</c>
+                without any parameters, and returns a handle object for it.
+                <br><br><br>
+                <sh><c>wait()</c></sh>
+                <br><br>
+                Makes the calling thread wait until <c>notify</c> was called
+                on its handle object.
+                <br><br><br>
+                <sh><c>sleep(time)</c></sh>
+                <br><br>
+                Makes the calling thread for <c>time</c> milliseconds.
+                <br><br><br>
+                <h>Properties</h>
+                <br><br>
+                A thread created by <c>new</c> has the following properties:
+                <br><br><br>
+                <sh><c>notify(self)</c></sh>
+                <br><br>
+                A method that makes the thread the handle object represents resume execution if it previously called <c>wait</c>.
+                <br><br><br>
+                <sh><c>join(self)</c></sh>
+                <br><br>
+                A method that blocks the calling thread until the thread the handle object represents stops execution.
+            `),
+
+        ]),
+
+        page("Environment", `
+            <h>The <c>std::env</c>-Module</h>
+            <br>
+            <i>C only</i>
+            <br><br>
+            This module contains procedures for managing information provided by the environment.
+            <br><br><br>
+            <sh><c>args()</c></sh>
+            <br><br>
+            Returns the program's command line arguments as an array of strings.
+            <br><br><br>
+            <sh><c>vars()</c></sh>
+            <br><br>
+            Returns the names of all environment variables as an array of strings.
+            <br><br><br>
+            <sh><c>get_var(name)</c></sh>
+            <br><br>
+            Returns the value of the environment variable <c>name</c> as a string.
+            <br><br><br>
+            <sh><c>set_var(value, name)</c></sh>
+            <br><br>
+            Sets the value of the environment variable <c>name</c> to the string <c>value</c>.
+            <br><br><br>
+            <sh><c>delete_var(name)</c></sh>
+            <br><br>
+            Deletes the environment variable <c>name</c>.
+            <br><br><br>
+            <sh><c>run(command)</c></sh>
+            <br><br>
+            Runs the shell command string <c>command</c>, blocking until the command has been executed and returning the exit code. For more control over the child process use <c>std::prc::Process</c>.
+            <br><br><br>
+            <sh><c>is_windows()</c></sh>
+            <br><br>
+            Returns <c>true</c> if the program is being run on Windows, and otherwise <c>false</c>.
+            <br><br><br>
+            <sh><c>is_osx()</c></sh>
+            <br><br>
+            Returns <c>true</c> if the program is being run on macOS, and otherwise <c>false</c>.
+            <br><br><br>
+            <sh><c>is_ios()</c></sh>
+            <br><br>
+            Returns <c>true</c> if the program is being run on iOS, and otherwise <c>false</c>.
+            <br><br><br>
+            <sh><c>is_linux()</c></sh>
+            <br><br>
+            Returns <c>true</c> if the program is being run on Linux, and otherwise <c>false</c>.
+            <br><br><br>
+            <sh><c>is_android()</c></sh>
+            <br><br>
+            Returns <c>true</c> if the program is being run on Android, and otherwise <c>false</c>.
+            <br><br><br>
+            <sh><c>is_unix()</c></sh>
+            <br><br>
+            Returns <c>true</c> if the program is being run on UNIX, and otherwise <c>false</c>.
+        `),
+
+        page("Input / Output", `
+            <h>The <c>std::io</c>-Module</h>
+            <br>
+            <i>C and Javascript only</i>
+            <br><br>
+            This module contains procedures for writing to stdout and stderr,
+            reading from stdin and interacting with the filesystem.
+            <br><br><br>
+            <sh><c>println(thing)</c></sh>
+            <br><br>
+            Uses <c>core::as_str</c> to convert <c>thing</c> to its string representation,
+            and then writes it to the standard output, followed by a new line.
+            <br><br><br>
+            <sh><c>eprintln(thing)</c></sh>
+            <br><br>
+            Uses <c>core::as_str</c> to convert <c>thing</c> to its string representation,
+            and then writes it to the standard error output, followed by a new line.
+            <br><br><br>
+            <h>The <c>std::io</c>-Module</h>
+            <br>
+            <i>C only</i>
+            <br><br><br>
+            <sh><c>inputln()</c></sh>
+            <br><br>
+            Reads a line of text as input from stdin (blocking), then returns it as a string.
+            <br><br><br>
+            <sh><c>print(thing)</c></sh>
+            <br><br>
+            Uses <c>core::as_str</c> to convert <c>thing</c> to its string representation,
+            and then writes it to the standard output, <b>not followed by a new line</b>.
+            <br><br><br>
+            <sh><c>eprint(thing)</c></sh>
+            <br><br>
+            Uses <c>core::as_str</c> to convert <c>thing</c> to its string representation,
+            and then writes it to the standard error output, <b>not followed by a new line</b>.
+            <br><br><br>
+            <sh><c>set_cwd(path)</c></sh>
+            <br><br>
+            Sets the program's current working directory to <c>path</c>.
+            <br><br><br>
+            <sh><c>get_cwd()</c></sh>
+            <br><br>
+            Returns the program's current working directory as an absolute path.
+            <br><br><br>
+            <sh><c>file_exists(path)</c></sh>
+            <br><br>
+            Returns <c>true</c> if there is a file or directory at the path
+            specified by <c>path</c>, and otherwise returns <c>false</c>.
+            <br><br><br>
+            <sh><c>canonicalize(path)</c></sh>
+            <br><br>
+            Attempts to convert <c>path</c> to an absolute path,
+            and returns the absolute path as a result with a string error.
+            <br><br><br>
+            <sh><c>is_dir(path)</c></sh>
+            <br><br>
+            Returns <c>true</c> if there is a directory at the path
+            specified by <c>path</c>, and otherwise returns <c>false</c>.
+            <br><br><br>
+            <sh><c>create_dir(path)</c></sh>
+            <br><br>
+            Attempts to create a new directory at the path specified by <c>path</c>.
+            Returns <c>unit</c> as a result with a string error.
+            <br><br><br>
+            <sh><c>read_dir(path)</c></sh>
+            <br><br>
+            Attemps to read the contents of the directory at the path <c>path</c>.
+            Returns a string array with the content names as a result with a string error.
+            <br><br><br>
+            <sh><c>delete_dir(path)</c></sh>
+            <br><br>
+            Attemps to delete the directory at the path <c>path</c>.
+            Returns <c>unit</c> as a result with a string error.
+            <br><br><br>
+            <sh><c>is_file(path)</c></sh>
+            <br><br>
+            Returns <c>true</c> if there is a file at the path
+            specified by <c>path</c>, and otherwise returns <c>false</c>.
+            <br><br><br>
+            <sh><c>write_file(content, path)</c></sh>
+            <br><br>
+            Attempts to write the string <c>content</c> to a file at the path <c>path</c>,
+            creating a new file or overwriting the existing one (UTF-8).
+            Returns <c>unit</c> as a result with a string error.
+            <br><br><br>
+            <sh><c>read_file(path)</c></sh>
+            <br><br>
+            Attempts to read the contents of the file at the path <c>path</c> (UTF-8).
+            Returns the file contents as a string as a result with a string error.
+            <br><br><br>
+            <sh><c>delete_file(path)</c></sh>
+            <br><br>
+            Attempts to delete the file at the path <c>path</c>.
+            Returns <c>unit</c> as a result with a string error.
+            <br><br><br>
+            <sh><c>file_sep()</c></sh>
+            <br><br>
+            Returns the file separator (<c>\\</c> for Windows, <c>/</c> for UNIX)
+            for the system the program is running on.
+            <br><br><br>
+            <sh><c>path_sep()</c></sh>
+            <br><br>
+            Returns the file path separator (<c>;</c> for Windows, <c>:</c> for UNIX)
+            for the system the program is running on.
+        `),
+
+        page("Iterators", `
+            <h>The <c>std::iter</c>-Moduke</h>
+            <br><br>
+            This module contains procedures for working with iterators.
+            Iterators are Gera's alternative to loops.
+            <br>
+            Gera iterators are lazy, meaning (for example) when an iterator
+            is mapped using a function, the function will only actually be
+            called when the iterator is asked for that value.
+            <br>
+            In theory, a Gera iterator is simply defined as a function
+            without arguments that returns either the variant <c>#next</c>
+            (where the value is the next element in the sequence) or
+            <c>#end</c> (with any value), meaning the end of the iterator has been reached.
+            <br>
+            Meaning to write your own iterator, you can simply return a function
+            that returns either <c>#next ...</c> or <c>#end unit</c>. For example,
+            here is an infinite iterator over the Fibonacci sequence:
+            <br>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
+mod example
+
+proc fib() {
+    mut var a = 0
+    mut var b = 1
+    return || {
+        var c = a + b
+        a = b
+        b = c
+        return #next c
+    }
+}
+
+use std::(iter, io)
+
+proc main() {
+    fib()
+        |> iter::take(11)
+        |> iter::for_each(io::println) 
+}
+            </span></gc></pre>
+            <br><br><br>
+            <sh><c>map(iter, mapping)</c></sh>
+            <br><br>
+            Returns a new iterator over the items of <c>iter</c>, where each item is mapped
+            to the result of calling <c>mapping</c> with the item.
+            <br><br><br>
+            <sh><c>filter(iter, condition)</c></sh>
+            <br><br>
+            Returns a new iterator over the items of <c>iter</c>,
+            only including the items for which <c>condition</c> returns <c>true</c>.
+            <br><br><br>
+            <sh><c>reduce(iter, reduction, intitial)</c></sh>
+            <br><br>
+            Starting with the current value being <c>initial</c>,
+            fully exhausts the iterator <c>iter</c>, passing the current value (first argument)
+            and the current item from <c>iter</c> (second argument) to <c>reduction</c>,
+            making the result the new current value.
+            After the end of <c>iter</c> has been reached, the current value is returned.
+            <br><br><br>
+            <sh><c>take(iter, n)</c></sh>
+            <br><br>
+            Returns a new iterator over the items in <c>iter</c>.
+            Ends if either the end of <c>iter</c> has been reached or <c>n</c> elements
+            have been taken from <c>iter</c>.
+            <br><br><br>
+            <sh><c>take_while(iter, cond)</c></sh>
+            <br><br>
+            Returns a new iterator over the items in <c>iter</c>.
+            Ends if either the end of <c>iter</c> has been reached or the function <c>cond</c>
+            returns <c>false</c> when being passed the current item.
+            <br><br><br>
+            <sh><c>skip(iter, n)</c></sh>
+            <br><br>
+            Returns a new iterator over the items in <c>iter</c>, skipping the next <c>n</c> items.
+            <br><br><br>
+            <sh><c>for_each(iter, action)</c></sh>
+            <br><br>
+            Fully exhausts <c>iter</c>, calling <c>action</c> with each item.
+            <br><br><br>
+            <sh><c>zip(iter_a, iter_b, combinator)</c></sh>
+            <br><br>
+            Returns a new iterator where each item in the sequence is the result of calling
+            <c>combinator</c> with the next items from <c>iter_a</c> and <c>iter_b</c>.
+            The iterator ends if either <c>iter_a</c> or <c>iter_b</c> end.
+            <br><br><br>
+            <sh><c>chain(iter_a, iter_b)</c></sh>
+            <br><br>
+            Returns a new iterator over the items of <c>iter_a</c>.
+            If the end of <c>iter_a</c> is reached,
+            the next items from <c>iter_b</c> will be returned.
+            The iterator ends if both <c>iter_a</c> and <c>iter_b</c> end.
+            <br><br><br>
+            <sh><c>count(iter)</c></sh>
+            <br><br>
+            Fully exhausts <c>iter</c>, returning the number of items the iterator
+            returned until the end was reached.
+            <br><br><br>
+            <sh><c>next(iter)</c></sh>
+            <br><br>
+            Optionally returns the next item from the iterator <c>iter</c>.
+            <br><br><br>
+            <sh><c>last(iter)</c></sh>
+            <br><br>
+            Fully exhausts <c>iter</c>,
+            optionally returning the last returned item from the iterator.
+            <br><br><br>
+            <sh><c>find(iter, condition)</c></sh>
+            <br><br>
+            Exhausts <c>iter</c> until an item for which <c>condition</c> returns <c>true</c>
+            has been returned. Optionally returns the found element.
+            <br><br><br>
+            <sh><c>find_last(iter, condition)</c></sh>
+            <br><br>
+            Fully exhausts <c>iter</c>,
+            optionally returning the last item for which <c>condition</c> returns <c>true</c>.
+            <br><br><br>
+            <sh><c>enumerate(iter)</c></sh>
+            <br><br>
+            Returns a new iterator over objects
+            where <c>idx</c> is the index of the item (0 is the first, 1 the second, ...)
+            and <c>val</c> is the item from <c>iter</c>.
+            The iterator ends if <c>iter</c> ends.
+            <br><br><br>
+            <sh><c>has(iter, element)</c></sh>
+            <br><br>
+            Exhausts <c>iter</c> until an item <c>i</c> for which <c>i == element</c>
+            has been returned. Returns <c>true</c> if one has been found,
+            and otherwise <c>false</c>.
+            <br><br><br>
+            <sh><c>empty()</c></sh>
+            <br><br>
+            Returns a new empty iterator.
+            <br><br><br>
+            <sh><c>over_value(value)</c></sh>
+            <br><br>
+            Returns a new iterator that only returns <c>value</c> once,
+            afterwards reaching the end.
+            <br><br><br>
+            <sh><c>repeat_over(f)</c></sh>
+            <br><br>
+            Returns a new infinite iterator, where each item in the sequence is the value
+            returned by <c>f</c>.
+        `),
+
+        page("Math", `
+            <h>The <c>std::math</c>-Module</h>
+            <br><br>
+            This module contains constants and procedures for general math-related operations.
+            <br><br><br>
+            <sh><c>INT_MIN</c></sh>
+            <br><br>
+            <c>-9223372036854775808</c>
+            <br><br><br>
+            <sh><c>INT_MAX</c></sh>
+            <br><br>
+            <c>9223372036854775807</c>
+            <br><br><br>
+            <sh><c>INF</c></sh>
+            <br><br>
+            The float infinity value. The result of <c>1.0 / 0.0</c>.
+            <br><br><br>
+            <sh><c>NAN</c></sh>
+            <br><br>
+            The float "not a number" value. The result of <c>0.0 / 0.0</c>.
+            <br><br><br>
+            <sh><c>PI</c></sh>
+            <br><br>
+            <c>3.14159265358979323846264338327950288</c>
+            <br><br><br>
+            <sh><c>TAU</c></sh>
+            <br><br>
+            <c>6.28318530717958647692528676655900577</c>
+            <br><br><br>
+            <sh><c>E</c></sh>
+            <br><br>
+            <c>2.718281828459045</c>
+            <br><br><br>
+            <sh><c>abs(x)</c></sh>
+            <br><br>
+            Returns the absolute value of the float or integer <c>x</c>.
+            <br><br><br>
+            <sh><c>max(a, b)</c></sh>
+            <br><br>
+            Returns the larger integer or float of <c>a</c> and <c>b</c>.
+            <br><br><br>
+            <sh><c>min(a, b)</c></sh>
+            <br><br>
+            Returns the smaller integer or float of <c>a</c> and <c>b</c>.
+            <br><br><br>
+            <sh><c>clamp(x, min, max)</c></sh>
+            <br><br>
+            Returns the integer or float <c>x</c>
+            limited to being at least as large as <c>min</c> 
+            and being at most as large as <c>max</c>.
+            <br><br><br>
+            <h>The <c>std::math</c>-Module</h>
+            <br>
+            <i>C and Javascript only</i>
+            <br><br><br>
+            <sh><c>exp(x)</c></sh>
+            <br><br>
+            Returns <c>e</c> raised to the power of the float <c>x</c>.
+            <br><br><br>
+            <sh><c>expm1(x)</c></sh>
+            <br><br>
+            Returns <c>e</c> raised to the power of the float <c>x</c>,
+            subtracted by 1.
+            <br><br><br>
+            <sh><c>log(x)</c></sh>
+            <br><br>
+            Returns the natural logarithm (base <c>e</c>) of the float <c>x</c>.
+            <br><br><br>
+            <sh><c>log10(x)</c></sh>
+            <br><br>
+            Returns the base 10 logarithm of the float <c>x</c>.
+            <br><br><br>
+            <sh><c>log2(x)</c></sh>
+            <br><br>
+            Returns the base 2 logarithm of the float <c>x</c>.
+            <br><br><br>
+            <sh><c>log1p(x)</c></sh>
+            <br><br>
+            Returns the natural logarithm (base <c>e</c>) of the float <c>x + 1</c>.
+            <br><br><br>
+            <sh><c>pow(x, n)</c></sh>
+            <br><br>
+            Returns the float <c>x</c> raised to the power of the float <c>n</c>.
+            <br><br><br>
+            <sh><c>sqrt(x)</c></sh>
+            <br><br>
+            Returns the square root of the float <c>x</c>.
+            <br><br><br>
+            <sh><c>cbrt(x)</c></sh>
+            <br><br>
+            Returns the cubic root of the float <c>x</c>.
+            <br><br><br>
+            <sh><c>hypot(a, b)</c></sh>
+            <br><br>
+            Returns the square root of the sum of squares of the floats <c>a</c> and <c>b</c>.
+            <br><br><br>
+            <sh><c>sin(x)</c></sh>
+            <br><br>
+            Returns the sine of the float <c>x</c> in radians.
+            <br><br><br>
+            <sh><c>cos(x)</c></sh>
+            <br><br>
+            Returns the cosine of the float <c>x</c> in radians.
+            <br><br><br>
+            <sh><c>tan(x)</c></sh>
+            <br><br>
+            Returns the tangent of the float <c>x</c> in radians.
+            <br><br><br>
+            <sh><c>asin(x)</c></sh>
+            <br><br>
+            Returns the inverse sine of the float <c>x</c> in radians.
+            <br><br><br>
+            <sh><c>acos(x)</c></sh>
+            <br><br>
+            Returns the inverse cosine of the float <c>x</c> in radians.
+            <br><br><br>
+            <sh><c>atan(x)</c></sh>
+            <br><br>
+            Returns the inverse tangent of the float <c>x</c> in radians.
+            <br><br><br>
+            <sh><c>atan2(x)</c></sh>
+            <br><br>
+            Returns the angle in the plane in radians
+            between the positive x-axis and the ray from (0, 0) to the point <c>(x, y)</c>.
+            <br><br><br>
+            <sh><c>sinh(x)</c></sh>
+            <br><br>
+            Returns the hyperbolic sine of the float <c>x</c>.
+            <br><br><br>
+            <sh><c>cosh(x)</c></sh>
+            <br><br>
+            Returns the hyperbolic cosine of the float <c>x</c>.
+            <br><br><br>
+            <sh><c>tanh(x)</c></sh>
+            <br><br>
+            Returns the hyperbolic tangent of the float <c>x</c>.
+            <br><br><br>
+            <sh><c>asinh(x)</c></sh>
+            <br><br>
+            Returns the inverse hyperbolic sine of the float <c>x</c>.
+            <br><br><br>
+            <sh><c>acosh(x)</c></sh>
+            <br><br>
+            Returns the inverse hyperbolic cosine of the float <c>x</c>.
+            <br><br><br>
+            <sh><c>atanh(x)</c></sh>
+            <br><br>
+            Returns the inverse hyperbolic tangent of the float <c>x</c>.
+            <br><br><br>
+            <sh><c>ceil(x)</c></sh>
+            <br><br>
+            Returns the the float <c>x</c> rounded up the nearest integer.
+            <br><br><br>
+            <sh><c>floor(x)</c></sh>
+            <br><br>
+            Returns the the float <c>x</c> rounded down the nearest integer.
+            <br><br><br>
+            <sh><c>trunc(x)</c></sh>
+            <br><br>
+            Returns the the integer part of the float <c>x</c> by removing any fractional digits.
+            <br><br><br>
+            <sh><c>round(x)</c></sh>
+            <br><br>
+            Returns the the float <c>x</c> rounded to the nearest integer.
+        `),
+
     ]),
 
     page("External Mappings", `
