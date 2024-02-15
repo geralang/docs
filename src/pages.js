@@ -1342,9 +1342,12 @@ proc main() {
             <br><br>
             Uses <c>std::sort::quicksort</c> to return a new sorted shallow copy <c>a</c>
             sorted according to the comparison function <c>comp</c>
-            (use <c>std::sort::ascending(f)</c> or <c>std::sort::descending(f)</c>,
-            where <c>f</c> is a function that takes an element and returns an integer or float
-            to sort according to).
+            (see <c>std::sort::ascending</c> and <c>std::sort::descending(f)</c>).
+            <br>
+            <c>comp</c> must be a function that takes two array elements
+            <c>a</c> and <c>b</c> to compare,
+            returning eiter a number that is less than zero (placing <c>a</c> before <c>b</c>)
+            or a number that is greater than zero (placing <c>a</c> behind <c>b</c>).
         `),
 
         page("Bitwise Operations", `
@@ -1569,9 +1572,12 @@ proc main() {
                 <br><br>
                 Uses <c>std::sort::quicksort</c> to sort <c>self</c>, modifying <c>self</c>.
                 The elements are sorted according to the comparison function <c>comp</c>
-                (use <c>std::sort::ascending(f)</c> or <c>std::sort::descending(f)</c>,
-                where <c>f</c> is a function that takes an element and returns an integer or float
-                to sort according to).
+                (see <c>std::sort::ascending(f)</c> and <c>std::sort::descending(f)</c>).
+                <br>
+                <c>comp</c> must be a function that takes two array elements
+                <c>a</c> and <c>b</c> to compare,
+                returning eiter a number that is less than zero (placing <c>a</c> before <c>b</c>)
+                or a number that is greater than zero (placing <c>a</c> behind <c>b</c>).
             `),
 
         ]),
@@ -2081,7 +2087,7 @@ proc main() {
             <br><br>
             Returns the inverse tangent of the float <c>x</c> in radians.
             <br><br><br>
-            <sh><c>atan2(x)</c></sh>
+            <sh><c>atan2(x, y)</c></sh>
             <br><br>
             Returns the angle in the plane in radians
             between the positive x-axis and the ray from (0, 0) to the point <c>(x, y)</c>.
@@ -2125,6 +2131,462 @@ proc main() {
             <sh><c>round(x)</c></sh>
             <br><br>
             Returns the the float <c>x</c> rounded to the nearest integer.
+        `),
+
+        page("Optional Values", `
+            <h>The <c>std::opt</c>-Module</h>
+            <br><br>
+            This module contains procedures for working with optional values.
+            An optional value is simply either the variant <c>#some</c>
+            (where the value is the actual value)
+            or the variant <c>#none</c> (with any value, usually <c>unit</c>).
+            <br><br><br>
+            <sh><c>is_some(optional)</c></sh>
+            <br><br>
+            Returns <c>true</c> if <c>optional</c> has a value, and otherwise <c>false</c>.
+            <br><br><br>
+            <sh><c>is_none(optional)</c></sh>
+            <br><br>
+            Returns <c>false</c> if <c>optional</c> has a value, and otherwise <c>true</c>.
+            <br><br><br>
+            <sh><c>map(optional, mapping)</c></sh>
+            <br><br>
+            If <c>optional</c> contains a value, a new optional
+            containing the return value of calling <c>mapping</c> with the contained value is returned.
+            Otherwise, <c>#none unit</c> is returned.
+            <br><br><br>
+            <sh><c>unwrap_or(optional, default)</c></sh>
+            <br><br>
+            If <c>optional</c> contains a value, the value is returned.
+            Otherwise, <c>default</c> is returned.
+            <br><br><br>
+            <sh><c>unwrap_or_else(optional, default)</c></sh>
+            <br><br>
+            If <c>optional</c> contains a value, the value is returned.
+            Otherwise <c>default</c> is called without any arguments and the returned value is returned.
+            <br><br><br>
+            <sh><c>expect(optional, reason)</c></sh>
+            <br><br>
+            If <c>optional</c> contains a value, the value is returned.
+            Otherwise the program panics with the message <c>reason</c>.
+            <br><br><br>
+            <sh><c>iter(optional)</c></sh>
+            <br><br>
+            If <c>optional</c> contains a value,
+            an iterator with one item - this being the value - is returned.
+            Otherwise an empty iterator is returned.
+            <br><br><br>
+            <sh><c>flatten(optional)</c></sh>
+            <br><br>
+            Given that <c>optional</c> is an optional containing another optional value,
+            the underlying optional value is returned.
+            Otherwise an empty optional is returned.
+        `),
+
+        page("Processes", `
+            <h>The <c>std::prc::Process</c>-Module</h>
+            <br>
+            <i>C only</i>
+            <br><br>
+            This module contains simple functionality for managing child processes.
+            <br><br><br>
+            <sh><c>new(program, arguments)</c></sh>
+            <br><br>
+            Creates a new process, running the program specified by the string <c>program</c>
+            with the string array <c>arguments</c> as the program arguments.
+            <br><br><br>
+            <sh><c>exit(code)</c></sh>
+            <br><br>
+            Makes the program exit with the exit code <c>code</c>.
+            <br><br><br>
+            <h>Properties</h>
+            <br><br>
+            A process object created by <c>new</c> has the following properties:
+            <br><br><br>
+            <sh><c>kill(self)</c></sh>
+            <br><br>
+            A method that kills the child process represented by this object.
+            Returns <c>self</c>.
+            <br><br><br>
+            <sh><c>await(self)</c></sh>
+            <br><br>
+            A method that waits for the child process represented by this object to exit.
+            Returns <c>self</c>.
+            <br><br><br>
+            <sh><c>await_output(self)</c></sh>
+            <br><br>
+            A method that waits for the child process represented by this object
+            to write to the standard output buffer.
+            Returns <c>self</c>.
+            <br><br><br>
+            <sh><c>await_eoutput(self)</c></sh>
+            <br><br>
+            A method that waits for the child process represented by this object
+            to write to the standard error output buffer.
+            Returns <c>self</c>.
+            <br><br><br>
+            <sh><c>output(self)</c></sh>
+            <br><br>
+            A method that returns all data that has been written to the
+            standard output buffer by the child process represented by this object
+            since the last call to <c>output</c> as a UTF-8 string.
+            <br><br><br>
+            <sh><c>eoutput(self)</c></sh>
+            <br><br>
+            A method that returns all data that has been written to the
+            standard error output buffer by the child process represented by this object
+            since the last call to <c>output</c> as a UTF-8 string.
+            <br><br><br>
+            <sh><c>input(self, text)</c></sh>
+            <br><br>
+            A method that writes the data <c>text</c> as a UTF-8 string to the 
+            standard input buffer of the child process represented by this object,
+            <b>not followed by a new line</b>.
+            Returns <c>self</c>.
+            <br><br><br>
+            <sh><c>inputln(self, text)</c></sh>
+            <br><br>
+            A method that writes the data <c>text</c> as a UTF-8 string to the 
+            standard input buffer of the child process represented by this object,
+            <b>followed by a new line</b>.
+            Returns <c>self</c>.
+            <br><br><br>
+            <sh><c>exit_code(self)</c></sh>
+            <br><br>
+            A method that optionally returns the exit code
+            of the child process represented by this object.
+            <br><br><br>
+            <sh><c>is_done(self)</c></sh>
+            <br><br>
+            A method that returns <c>false</c> if the child process
+            is still running, and otherwise <c>true</c>.
+            
+        `),
+
+        page("Random Number Generation", `
+            <h>The <c>std::rng::Random</c>-Module</h>
+            <br><br>
+            This module contains simple functionality for generating random numbers.
+            <br><br><br>
+            <sh><c>new(seed)</c></sh>
+            <br><br>
+            Creates a new semi-random deterministic number generator,
+            intialized with the integer <c>seed</c>.
+            <br><br><br>
+            <h>Properties</h>
+            <br><br>
+            A random number generator created by <c>new</c> has the following properties:
+            <br><br><br>
+            <sh><c>seed(self, new_seed)</c></sh>
+            <br><br>
+            A method that overwrites the state of the generator to be
+            the new integer <c>new_seed</c>.
+            <br><br><br>
+            <sh><c>int(self)</c></sh>
+            <br><br>
+            A method that generates and returns a random integer, advancing
+            the state of the generator.
+            <br><br><br>
+            <sh><c>flt(self)</c></sh>
+            <br><br>
+            A method that generates and returns a random float, advancing
+            the state of the generator.
+            <br><br><br>
+            <sh><c>int_in(self, min, max)</c></sh>
+            <br><br>
+            A method that generates and returns a random integer
+            (at least <c>min</c> and at most <c>max</c>), advancing
+            the state of the generator.
+            <br><br><br>
+            <sh><c>flt_in(self, min, max)</c></sh>
+            <br><br>
+            A method that generates and returns a random float
+            (at least <c>min</c> and at most <c>max</c>), advancing
+            the state of the generator.
+            <br><br><br>
+            <sh><c>choice(self, src)</c></sh>
+            <br><br>
+            A method that picks and returns a random item from the array <c>src</c>,
+            advancing the state of the generator.
+            <br><br><br>
+            <sh><c>sample(self, src)</c></sh>
+            <br><br>
+            A method that returns a new infinite iterator
+            where for each item in the iterator it picks a random item from the array <c>src</c>,
+            advancing the state of the generator.
+            <br><br><br>
+            <h>The <c>std::rng::Random</c>-Module</h>
+            <br>
+            <i>C and Javascript only</i>
+            <br><br><br>
+            <sh><c>int()</c></sh>
+            <br><br>
+            Generates and returns a random integer, advancing
+            the state of the global generator.
+            <br><br><br>
+            <sh><c>flt()</c></sh>
+            <br><br>
+            Generates and returns a random float, advancing
+            the state of the global generator.
+            <br><br><br>
+            <sh><c>int_in(min, max)</c></sh>
+            <br><br>
+            Generates and returns a random integer
+            (at least <c>min</c> and at most <c>max</c>), advancing
+            the state of the global generator.
+            <br><br><br>
+            <sh><c>flt_in(min, max)</c></sh>
+            <br><br>
+            Generates and returns a random float
+            (at least <c>min</c> and at most <c>max</c>), advancing
+            the state of the global generator.
+            <br><br><br>
+            <sh><c>choice(src)</c></sh>
+            <br><br>
+            Picks and returns a random item from the array <c>src</c>,
+            advancing the state of the global generator.
+            <br><br><br>
+            <sh><c>sample(src)</c></sh>
+            <br><br>
+            Returns a new infinite iterator
+            where for each item in the iterator it picks a random item from the array <c>src</c>,
+            advancing the state of the global generator.
+        `),
+
+        page("Result Values", `
+            <h>The <c>std::res</c>-Module</h>
+            <br><br>
+            This module contains procedures for working with result values.
+            A result value is simply either the variant <c>#ok</c>
+            (where the value is the actual value)
+            or the variant <c>#err</c> (where the value is the error).
+            <br><br><br>
+            <sh><c>is_ok(result)</c></sh>
+            <br><br>
+            Returns <c>true</c> if <c>result</c> has a value, and <c>false</c> if it has an error.
+            <br><br><br>
+            <sh><c>is_err(result)</c></sh>
+            <br><br>
+            Returns <c>false</c> if <c>result</c> has a value, and <c>true</c> if it has an error.
+            <br><br><br>
+            <sh><c>get_ok(result)</c></sh>
+            <br><br>
+            Optionally returns the value held by <c>result</c>.
+            <br><br><br>
+            <sh><c>get_err(result)</c></sh>
+            <br><br>
+            Optionally returns the error held by <c>result</c>.
+            <br><br><br>
+            <sh><c>map(result, mapping)</c></sh>
+            <br><br>
+            If <c>result</c> contains a value, a new result (<c>#ok</c>)
+            containing the return value of calling <c>mapping</c> with the contained value is returned.
+            Otherwise, <c>result</c> is returned.
+            <br><br><br>
+            <sh><c>map_err(result, mapping)</c></sh>
+            <br><br>
+            If <c>result</c> contains an error, a new result (<c>#err</c>)
+            containing the return value of calling <c>mapping</c> with the contained error is returned.
+            Otherwise, <c>result</c> is returned.
+            <br><br><br>
+            <sh><c>unwrap_or(result, default)</c></sh>
+            <br><br>
+            If <c>result</c> contains a value, the value is returned.
+            Otherwise, <c>default</c> is returned.
+            <br><br><br>
+            <sh><c>unwrap_err_or(result, default)</c></sh>
+            <br><br>
+            If <c>result</c> contains an error, the error is returned.
+            Otherwise, <c>default</c> is returned.
+            <br><br><br>
+            <sh><c>unwrap_or_else(result, default)</c></sh>
+            <br><br>
+            If <c>result</c> contains a value, the value is returned.
+            Otherwise <c>default</c> is called without any arguments and the returned value is returned.
+            <br><br><br>
+            <sh><c>unwrap_err_or_else(result, default)</c></sh>
+            <br><br>
+            If <c>result</c> contains an error, the error is returned.
+            Otherwise <c>default</c> is called without any arguments and the returned value is returned.
+            <br><br><br>
+            <sh><c>expect(result, reason)</c></sh>
+            <br><br>
+            If <c>result</c> contains a value, the value is returned.
+            Otherwise the program panics with the message <c>reason</c>.
+            <br><br><br>
+            <sh><c>expect_err(result, reason)</c></sh>
+            <br><br>
+            If <c>result</c> contains an error, the error is returned.
+            Otherwise the program panics with the message <c>reason</c>.
+            <br><br><br>
+            <sh><c>and(result, other)</c></sh>
+            <br><br>
+            Returns <c>other</c> if <c>result</c> contains a value,
+            and otherwise returns <c>result</c>.
+            <br><br><br>
+            <sh><c>and_then(result, f)</c></sh>
+            <br><br>
+            Returns the return value of calling <c>f</c> with the value
+            contained by <c>result</c> if <c>result</c> contains a value,
+            and otherwise returns <c>result</c>.
+            <br><br><br>
+            <sh><c>or(result, other)</c></sh>
+            <br><br>
+            Returns <c>result</c> if <c>result</c> contains a value,
+            and otherwise returns <c>other</c>.
+            <br><br><br>
+            <sh><c>or_else(result, f)</c></sh>
+            <br><br>
+            Returns the return value of calling <c>f</c> with the error
+            contained by <c>result</c> if <c>result</c> contains an error,
+            and otherwise returns <c>other</c>.
+            <br><br><br>
+            <sh><c>iter(result)</c></sh>
+            <br><br>
+            If <c>result</c> contains a value,
+            an iterator with one item - this being the value - is returned.
+            Otherwise an empty iterator is returned.
+            <br><br><br>
+            <sh><c>iter_err(result)</c></sh>
+            <br><br>
+            If <c>result</c> contains a error,
+            an iterator with one item - this being the error - is returned.
+            Otherwise an empty iterator is returned.
+        `),
+
+        page("Sorting", `
+            <h>The <c>std::sort</c>-Module</h>
+            <br><br>
+            This module contains a simple quicksort implementation
+            and procedures for clearly defining the sorting order in a clear
+            fashion.
+            <br>
+            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
+mod example
+
+use std::(arr, sort, iter, io)
+
+var CATS = [
+    { name = "Cookie", age = 2 },
+    { name = "Destroyer of Worlds", age = 8 },
+    { name = "Snowball", age = 5 }
+]
+
+proc main() {
+    CATS
+        |> arr::sorted(sort::ascending(|c| c.age))
+        |> arr::iter()
+        |> iter::map(|c| c.name)
+        |> iter::for_each(io::println) 
+}
+            </span></gc></pre>
+            <br><br><br>
+            <sh><c>ascending(f)</c></sh>
+            <br><br>
+            Returns a comparison function to be used with <c>quicksort</c>,
+            <c>std::arr::sorted</c> and <c>.sort</c> of <c>std::coll::Vector</c>.
+            <br>
+            Makes it so that the input is sorted so that when calling <c>f</c>
+            with each element in the input,
+            the returned numbers are in ascending order.
+            <br><br><br>
+            <sh><c>descending(f)</c></sh>
+            <br><br>
+            Returns a comparison function to be used with <c>quicksort</c>,
+            <c>std::arr::sorted</c> and <c>.sort</c> of <c>std::coll::Vector</c>.
+            <br>
+            Makes it so that the input is sorted so that when calling <c>f</c>
+            with each element in the input,
+            the returned numbers are in descending order.
+            <br><br><br>
+            <sh><c>quicksort(array, start, end, comp)</c></sh>
+            <br><br>
+            Sorts the part of the given array <c>array</c> starting at the index
+            <c>start</c> up to the index <c>end</c> according to the comparison
+            function <c>comp</c> in place, modifying <c>array</c>.
+            <br>
+            <c>start</c> and <c>end</c> may not be negative.
+            <br>
+            <c>comp</c> must be a function that takes two array elements
+            <c>a</c> and <c>b</c> to compare,
+            returning eiter a number that is less than zero (placing <c>a</c> before <c>b</c>)
+            or a number that is greater than zero (placing <c>a</c> behind <c>b</c>).
+        `),
+
+            page("String Utilities", `
+            <h>The <c>std::str</c>-Module</h>
+            <br><br>
+            This module contains procedures for working with strings.
+            <br><br><br>
+            <sh><c>substring_until(s, end_index)</c></sh>
+            <br><br>
+            Returns the part of the string <c>s</c> starting at the index 0
+            up to the index <c>end_index</c>.
+            If <c>end_index</c> is negative, the length of <c>s</c> is added to it.
+            <br><br><br>
+            <sh><c>substring_after(s, start_index)</c></sh>
+            <br><br>
+            Returns the part of the string <c>s</c> starting at the index <c>start_index</c>
+            up to the end of the string.
+            If <c>start_index</c> is negative, the length of <c>s</c> is added to it.
+            <br><br><br>
+            <sh><c>at(s, index)</c></sh>
+            <br><br>
+            Returns a new string, only containing the code point
+            from the string <c>s</c> at the index <c>index</c>.
+            If <c>index</c> is negative, the length of <c>s</c> is added to it.
+            <br><br><br>
+            <sh><c>starts_with(s, prefix)</c></sh>
+            <br><br>
+            Returns <c>true</c> if the part of <c>s</c> starting at the index 0
+            up to the length of <c>prefix</c> matches the string <c>prefix</c>,
+            and otherwise <c>false</c>.
+            <br><br><br>
+            <sh><c>ends_with(s, suffix)</c></sh>
+            <br><br>
+            Returns <c>true</c> if the part of <c>s</c> starting at the index
+            <c>length(s) - length(suffix)</c> up to the end of <c>s</c>
+            matches the string <c>suffix</c>, and otherwise <c>false</c>.
+            <br><br><br>
+            <sh><c>find(s, sub)</c></sh>
+            <br><br>
+            Attempts to find the first occurance of the string <c>sub</c>
+            in the string <c>s</c> and optionally returns the index
+            of the first code point of the found occurance of <c>sub</c>.
+            <br><br><br>
+            <sh><c>pad_left(s, target_length, padding)</c></sh>
+            <br><br>
+            Returns a new string with a minimum length of <c>target_length</c>,
+            padded by repeating the string <c>padding</c> as many times as needed
+            and inserting it to the left of <c>s</c>.
+            <br><br><br>
+            <sh><c>pad_right(s, target_length, padding)</c></sh>
+            <br><br>
+            Returns a new string with a minimum length of <c>target_length</c>,
+            padded by repeating the string <c>padding</c> as many times as needed
+            and inserting it to the right of <c>s</c>.
+            <br><br><br>
+            <sh><c>fmt(s, v)</c></sh>
+            <br><br>
+            Returns a copy of <c>s</c>, replacing each underscore
+            inside of <c>s</c> with the corresponding element in the string array
+            <c>v</c>.
+            <br><br><br>
+            <sh><c>split(s, separator)</c></sh>
+            <br><br>
+            Splits <c>s</c> into parts at every occurance of <c>separator</c>,
+            and returns an iterator over each of the parts.
+            <br><br><br>
+            <sh><c>join(strings, separator)</c></sh>
+            <br><br>
+            Joins all strings items returned by the iterator <c>strings</c>
+            into a singular string, inserting <c>separator</c>
+            between each of the strings and returning the result.
+            <br><br><br>
+            <sh><c>iter(s)</c></sh>
+            <br><br>
+            Returns an iterator over all the code points in the string <c>s</c>,
+            where each item is a string containing the singular code point.
         `),
 
     ]),
