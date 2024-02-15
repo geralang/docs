@@ -2589,6 +2589,252 @@ proc main() {
             where each item is a string containing the singular code point.
         `),
 
+        page("Time", `
+            <h>The <c>std::time</c>-Module</h>
+            <br><br>
+            This module contains procedures and constants for working with time.
+            <br>
+            When talking about "a timestamp", what is meant is an integer
+            representing the number of milliseconds since
+            00:00:00 on the 1st of January, 01 AD.
+            <br><br><br>
+            <sh>
+                <c>JANUARY</c>, <c>FEBRUARY</c>, <c>MARCH</c>,
+                <c>APRIL</c>, <c>MAY</c>, <c>JUNE</c>,
+                <c>JULY</c>, <c>AUGUST</c>, <c>SEPTEMBER</c>,
+                <c>OCTOBER</c>, <c>NOVEMBER</c>, <c>DECEMBER</c>
+            </sh>
+            <br><br>
+            Each of the constants is the same months number (1-indexed), meaning
+            <c>JANUARY</c> is <c>1</c>, <c>FEBRUARY</c> is <c>2</c> and so on.
+            <br><br><br>
+            <sh><c>date(day, month, year)</c></sh>
+            <br><br>
+            Returns the <c>day</c>th day (1-indexed)
+            of the <c>month</c>th month (1-indexed)
+            of the <c>year</c>th year (1-indexed) as a timestamp.
+            <br>
+            To get the 15th of February, 1946 as a timestamp,
+            call <c>date(15, FEBRUARY, 1946)</c>.
+            <br><br><br>
+            <sh><c>date_time(day, month, year, hour, minute, second)</c></sh>
+            <br><br>
+            Returns the <c>day</c>th day (1-indexed)
+            of the <c>month</c>th month (1-indexed)
+            of the <c>year</c>th year (1-indexed)
+            at <c>hour</c>:<c>minute</c>:<c>second</c> as a timestamp.
+            <br>
+            To get the 15th of February, 1946 at 11:23:05 as a timestamp,
+            call <c>date_time(15, FEBRUARY, 1946, 11, 23, 05)</c>.
+            <br><br><br>
+            <sh><c>unix_epoch()</c></sh>
+            <br><br>
+            Returns the UNIX epoch as a time stamp.
+            <br><br><br>
+            <sh><c>as_utc(local_tz_timestamp)</c></sh>
+            <br><br>
+            Converts the timestamp <c>local_tz_timestamp</c> from the local time zone
+            to the corresponding UTC time.
+            <br><br><br>
+            <sh><c>as_local(utc_tz_timestamp)</c></sh>
+            <br><br>
+            Converts the timestamp <c>utc_tz_timestamp</c> from the UTC time zone
+            to the corresponding local time.
+            <br><br><br>
+            <sh><c>as_weeks(timestamp)</c></sh>
+            <br><br>
+            Returns the timestamp or millisecond duration <c>timestamp</c>
+            as the number of full weeks as an integer.
+            <br><br><br>
+            <sh><c>as_days(timestamp)</c></sh>
+            <br><br>
+            Returns the timestamp or millisecond duration <c>timestamp</c>
+            as the number of full days as an integer.
+            <br><br><br>
+            <sh><c>as_hours(timestamp)</c></sh>
+            <br><br>
+            Returns the timestamp or millisecond duration <c>timestamp</c>
+            as the number of full hours as an integer.
+            <br><br><br>
+            <sh><c>as_minutes(timestamp)</c></sh>
+            <br><br>
+            Returns the timestamp or millisecond duration <c>timestamp</c>
+            as the number of full minutes as an integer.
+            <br><br><br>
+            <sh><c>as_seconds(timestamp)</c></sh>
+            <br><br>
+            Returns the timestamp or millisecond duration <c>timestamp</c>
+            as the number of full seconds as an integer.
+            <br><br><br>
+            <sh><c>as_days_flt(timestamp)</c></sh>
+            <br><br>
+            Returns the timestamp or millisecond duration <c>timestamp</c>
+            as the number of days as a float.
+            <br><br><br>
+            <sh><c>as_hours_flt(timestamp)</c></sh>
+            <br><br>
+            Returns the timestamp or millisecond duration <c>timestamp</c>
+            as the number of hours as a float.
+            <br><br><br>
+            <sh><c>as_minutes_flt(timestamp)</c></sh>
+            <br><br>
+            Returns the timestamp or millisecond duration <c>timestamp</c>
+            as the number of minutes as a float.
+            <br><br><br>
+            <sh><c>as_seconds_flt(timestamp)</c></sh>
+            <br><br>
+            Returns the timestamp or millisecond duration <c>timestamp</c>
+            as the number of seconds as a float.
+            <br><br><br>
+            <sh><c>weeks(w)</c></sh>
+            <br><br>
+            Returns <c>w</c> full weeks as a millisecond duration or timestamp.
+            <br><br><br>
+            <sh><c>days(d)</c></sh>
+            <br><br>
+            Returns <c>d</c> full days as a millisecond duration or timestamp.
+            <br><br><br>
+            <sh><c>hours(h)</c></sh>
+            <br><br>
+            Returns <c>h</c> full hours as a millisecond duration or timestamp.
+            <br><br><br>
+            <sh><c>minutes(m)</c></sh>
+            <br><br>
+            Returns <c>m</c> full minutes as a millisecond duration or timestamp.
+            <br><br><br>
+            <sh><c>seconds(s)</c></sh>
+            <br><br>
+            Returns <c>s</c> full seconds as a millisecond duration or timestamp.
+            <br><br><br>
+            <sh><c>add_years(timestamp, y)</c></sh>
+            <br><br>
+            Adds <c>y</c> full years to the timestamp <c>timestamp</c>
+            and returns the result.
+            <br><br><br>
+            <sh><c>add_months(timestamp, m)</c></sh>
+            <br><br>
+            Adds <c>m</c> full months to the timestamp <c>timestamp</c>
+            and returns the result.
+            <br><br><br>
+            <sh><c>add_weeks(timestamp, w)</c></sh>
+            <br><br>
+            Adds <c>w</c> full weeks to the timestamp <c>timestamp</c>
+            and returns the result.
+            <br><br><br>
+            <sh><c>add_days(timestamp, d)</c></sh>
+            <br><br>
+            Adds <c>d</c> full days to the timestamp <c>timestamp</c>
+            and returns the result.
+            <br><br><br>
+            <sh><c>add_hours(timestamp, h)</c></sh>
+            <br><br>
+            Adds <c>h</c> full hours to the timestamp <c>timestamp</c>
+            and returns the result.
+            <br><br><br>
+            <sh><c>add_minutes(timestamp, m)</c></sh>
+            <br><br>
+            Adds <c>m</c> full minutes to the timestamp <c>timestamp</c>
+            and returns the result.
+            <br><br><br>
+            <sh><c>add_seconds(timestamp, s)</c></sh>
+            <br><br>
+            Adds <c>s</c> full seconds to the timestamp <c>timestamp</c>
+            and returns the result.
+            <br><br><br>
+            <sh><c>is_leap_year(no_of_years_passed_ad)</c></sh>
+            <br><br>
+            Determines if a zero-indexed year <c>no_of_years_passed_ad</c>
+            is a leap year.
+            <br><br><br>
+            <sh><c>as_year_ad(timestamp)</c></sh>
+            <br><br>
+            Returns the given timestamp <c>timestamp</c> as the number
+            of full years passed since the 1st of January, 1 AD at 00:00:00.
+            This means that if the given timestamp represents the 3rd of February
+            1973 at 23:05:13, this procedure would return <c>1972</c>. 
+            <br><br><br>
+            <sh><c>as_month_of_year(timestamp)</c></sh>
+            <br><br>
+            Returns the number of full months passed since the start of the current year
+            for the given timestamp <c>timestamp</c> as an integer (<b>not the current month!</b>).
+            <br><br><br>
+            <sh><c>as_day_of_month(timestamp)</c></sh>
+            <br><br>
+            Returns the number of full days passed since the start of the current month
+            for the given timestamp <c>timestamp</c> as an integer (<b>not the current day!</b>).
+            <br><br><br>
+            <sh><c>as_day_of_week(timestamp)</c></sh>
+            <br><br>
+            Returns the number of full days passed since the start of the current week
+            for the given timestamp <c>timestamp</c> as an integer (<b>not the current day!</b>).
+            <br><br><br>
+            <sh><c>as_hour_of_day(timestamp)</c></sh>
+            <br><br>
+            Returns the number of full hours passed since the start of the current day
+            for the given timestamp <c>timestamp</c> as an integer.
+            <br><br><br>
+            <sh><c>as_minute_of_hour(timestamp)</c></sh>
+            <br><br>
+            Returns the number of full minutes passed since the start of the current hour
+            for the given timestamp <c>timestamp</c> as an integer.
+            <br><br><br>
+            <sh><c>as_second_of_minute(timestamp)</c></sh>
+            <br><br>
+            Returns the number of full seconds passed since the start of the current minute
+            for the given timestamp <c>timestamp</c> as an integer.
+            <br><br><br>
+            <sh><c>as_milli_of_second(timestamp)</c></sh>
+            <br><br>
+            Returns the number of full milliseconds passed since the start of the current second
+            for the given timestamp <c>timestamp</c> as an integer.
+            <br><br><br>
+            <sh><c>display_month(month)</c></sh>
+            <br><br>
+            Returns the English name of the given zero-indexed month (0 = January, 1 = February, ...)
+            as a string.
+            <br><br><br>
+            <sh><c>display_weekday(day)</c></sh>
+            <br><br>
+            Returns the English name of the given zero-indexed weekday (0 = Monday, 1 = Tuesday, ...)
+            as a string.
+            <br><br><br>
+            <sh><c>display_day(day)</c></sh>
+            <br><br>
+            Returns the English name of the given zero-indexed day (0 = 1st, 1 = 2nd, 2 = 3rd, ...)
+            as a string.
+            <br><br><br>
+            <sh><c>format_date(timestamp, pattern)</c></sh>
+            <br><br>
+            Returns <c>pattern</c>, replacing occurances of the following
+            with data according to the date represented by the timestamp <c>timestamp</c>:
+            <ul>
+                <li><c>{day}</c> is replaced with the current day of the month in long form</li>
+                <li><c>{weekday}</c> is replaced with the name of the current day of the week</li>
+                <li><c>{month}</c> is replaced with the name of the current month of the year</li>
+                <li><c>[second]</c> is replaced with the current second of the minute as a number</li>
+                <li><c>[minute]</c> is replaced with the current minute of the hour as a number</li>
+                <li><c>[hour]</c> is replaced with the current hour of the day as a number</li>
+                <li><c>[day]</c> is replaced with the current day of the month as a number (1-indexed)</li>
+                <li><c>[month]</c> is replaced with the current month of the year as a number (1-indexed)</li>
+                <li><c>[year]</c> is replaced with the current year AD as a number (1-indexed)</li>
+            </ul>
+            A US-style date pattern would look like <c>"[month]/[day]/[year] [hour]:[minute]:[second]"</c>,
+            <br>
+            while a European-style date pattern would look like <c>"[day].[month].[year] [hour]:[minute]:[second]"</c>.
+            <br><br><br>
+            <h>The <c>std::time</c>-Module</h>
+            <br>
+            <i>C and Javascript only</i>
+            <br><br><br>
+            <sh><c>now_utc()</c></sh>
+            <br><br>
+            Returns the current time in UTC as a timestamp.
+            <br><br><br>
+            <sh><c>now_local()</c></sh>
+            <br><br>
+            Returns the current time in the local time zone as a timestamp.
+        `),
+
     ]),
 
     page("External Mappings", `
