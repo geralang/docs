@@ -1216,6 +1216,33 @@ proc main() {
         This error is irrecoverable, so it should only be used for situations
         where the programmer did something wrong.
         For recoverable errors, use <i>results</i> instead.
+        <br>
+        Because there is no way for the program to continue after a call to
+        <c>panic</c>, its hypothetical return value can be used as a placeholder for anything:
+        <br>
+        <pre><gc main="example::main"><span ext="gera" hls="source.gera">
+mod example
+
+use std::io::println
+
+proc main() {
+    weekday(1) |> println()
+    weekday(5) |> println()
+    weekday(9) |> println()
+}
+
+proc weekday(n) {
+    case n {
+        0 -> return "Monday"
+        1 -> return "Tuesday"
+        2 -> return "Wednesday"
+        3 -> return "Thursday"
+        4 -> return "Friday"
+        5 -> return "Saturday"
+        6 -> return "Sunday"
+    } else return panic("invalid index!")
+}
+        </span></gc></pre>
         <br><br><br>
         <sh><c>as_str(thing)</c></sh>
         <br><br>
