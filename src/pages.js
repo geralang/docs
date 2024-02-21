@@ -1269,20 +1269,6 @@ proc weekday(n) {
         <br><br>
         Returns a new string by appending <c>string_b</c> to the end of <c>string_a</c>.
         <br><br><br>
-        <sh><c>parse_int(source)</c></sh>
-        <br><br>
-        Attempts to parse <c>source</c> as an integer.
-        If successful, the variant <c>#some</c>
-        (where the value is the parsed integer) will be returned.
-        If unsuccessful, the variant <c>#none</c> (where the value is <c>unit</c>) will be returned.
-        <br><br><br>
-        <sh><c>parse_flt(source)</c></sh>
-        <br><br>
-        Attempts to parse <c>source</c> as a float.
-        If successful, the variant <c>#some</c>
-        (where the value is the parsed float) will be returned.
-        If unsuccessful, the variant <c>#none</c> (where the value is <c>unit</c>) will be returned.
-        <br><br><br>
         <sh><c>string(repeated, times)</c></sh>
         <br><br>
         Creates a new string by repeating the string <c>repeated</c> <c>times</c> times.
@@ -2577,8 +2563,8 @@ proc main() {
             <br><br><br>
             <sh><c>find(s, sub)</c></sh>
             <br><br>
-            Attempts to find the first occurance of the string <c>sub</c>
-            in the string <c>s</c> and optionally returns the index
+            Returns an iterator over all found occurances of the string <c>sub</c>
+            in the string <c>s</c>. Each iterator item is the index
             of the first code point of the found occurance of <c>sub</c>.
             <br><br><br>
             <sh><c>pad_left(s, target_length, padding)</c></sh>
@@ -2614,6 +2600,29 @@ proc main() {
             <br><br>
             Returns an iterator over all the code points in the string <c>s</c>,
             where each item is a string containing the singular code point.
+            <br><br><br>
+            <sh><c>parse_int(source)</c></sh>
+            <br><br>
+            Attempts to parse <c>source</c> as an integer.
+            If successful, the variant <c>#some</c>
+            (where the value is the parsed integer) will be returned.
+            If unsuccessful, the variant <c>#none</c> (where the value is <c>unit</c>) will be returned.
+            <br><br>
+            To be parsed by this procedure, <c>source</c> needs to be a string
+            where the first code point may be <c>-</c>, and all other code points
+            must be an ASCII digit (<c>0</c>, <c>1</c>, ..., <c>8</c> or <c>9</c>).
+            <br><br><br>
+            <sh><c>parse_flt(source)</c></sh>
+            <br><br>
+            Attempts to parse <c>source</c> as a float.
+            If successful, the variant <c>#some</c>
+            (where the value is the parsed float) will be returned.
+            If unsuccessful, the variant <c>#none</c> (where the value is <c>unit</c>) will be returned.
+            <br><br>
+            To be parsed by this procedure, <c>source</c> needs to be a string
+            where the first code point may be <c>-</c>, and all other code points
+            must be an ASCII digit (<c>0</c>, <c>1</c>, ..., <c>8</c> or <c>9</c>)
+            or up to one dot <c>.</c>.
         `),
 
         page("Time", `
