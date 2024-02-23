@@ -24,7 +24,7 @@ pub fn compile_to_js(js_files: JsValue, main_proc: JsValue) -> JsValue {
         files.insert(strings.insert(&file.name), strings.insert(&file.content));
     }
     let main = serde_wasm_bindgen::from_value::<String>(main_proc).unwrap();
-    return match compiler::compile(&mut strings, files, "js", Some(main)) {
+    return match compiler::compile(&mut strings, files, "js", Some(main), None, false) {
         Ok(output) => serde_wasm_bindgen::to_value(
             &CompResult {
                 success: true,
