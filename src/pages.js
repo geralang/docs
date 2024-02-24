@@ -2526,7 +2526,7 @@ proc main() {
             or a number that is greater than zero (placing <c>a</c> behind <c>b</c>).
         `),
 
-            page("String Utilities", `
+        page("String Utilities", `
             <h>The <c>std::str</c>-Module</h>
             <br><br>
             This module contains procedures for working with strings.
@@ -2869,6 +2869,24 @@ proc main() {
             <sh><c>now_local()</c></sh>
             <br><br>
             Returns the current time in the local time zone as a timestamp.
+        `),
+
+        page("Testing", `
+            <h>The <c>std::test</c>-Module</h>
+            <br><br>
+            This module contains procedures for assertions to be used when writing tests.
+            <br><br><br>
+            <sh><c>assert(condition)</c></sh>
+            <br><br>
+            Produces a panic if <c>condition</c> is not <c>true</c>.
+            <br><br><br>
+            <sh><c>assert_eq(a, b)</c></sh>
+            <br><br>
+            Produces a panic if <c>a == b</c> does not evaluate to <c>true</c>. 
+            <br><br><br>
+            <sh><c>assert_ne(a, b)</c></sh>
+            <br><br>
+            Produces a panic if <c>a != b</c> does not evaluate to <c>true</c>. 
         `),
 
     ]),
