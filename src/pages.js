@@ -973,7 +973,7 @@ proc main() {
         page("Piping", `
             <h>Piping</h>
             <br><br><br>
-            <h>Procedure Call Piping with <c>|></c></sh>
+            <sh>Procedure Call Piping with <c>|></c></sh>
             <br><br>
             Deeply nested procedure calls can get pretty ugly fairly quickly.
             Gera provides syntactic sugar to help with this.
@@ -1003,7 +1003,7 @@ proc main() {
 }
             </span></gc></pre>
             <br><br>
-            <h>Method Calls with <c>.></c></sh>
+            <sh>Method Calls with <c>.></c></sh>
             <br><br>
             "Method" refers to a member of an object that stores a function.
             This function accepts the thing its called as the first parameter,
