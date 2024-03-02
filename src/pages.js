@@ -985,20 +985,16 @@ proc main() {
             <pre><gc main="example::main"><span ext="gera" hls="source.gera">
 mod example
 
-proc double(x) {
-    return x + x
-}
-
+use std::str // module for working with strings
 use std::opt // module for handling optional values
 use std::io::println
 
 proc main() {
     "3.14"
-        // built-in that returns an optional float
-        |> parse_flt()
+        // optionally returns the parsed string
+        |> str::parse_flt()
         // expect the optional to have a value (for a given reason)
         |> opt::expect("should be valid") 
-        |> double()
         |> println()
 }
             </span></gc></pre>
@@ -1016,27 +1012,40 @@ proc main() {
             <br>
             This also allows it to be used in a chain together with <c>|></c>.
             <br>
-            <pre><gc main="example::main"><span ext="gera" hls="source.gera">
-mod example
+            <pre><gc main="example::main">
+                <span ext="gera" hls="source.gera">
+mod example::Cat
 
-proc create_cat(name) { return {
+pub proc new(name) { return {
     name = name,
     hunger = 0.5,
+
+    play = |self| {
+        self.hunger = self.hunger + 0.1
+        return self
+    },
+
     feed = |self| {
         self.hunger = 0.0
         return self
     }
 } }
+                </span>
+                <span ext="gera" hls="source.gera">
+mod example
 
+use example::Cat
 use std::io::println
 
 proc main() {
-    var my_cat = create_cat("Cookie")
+    var my_cat = Cat::new("Cookie")
+        .> play()
         .> feed()
     my_cat.hunger
         |> println()
 }
-            </span></gc></pre>
+                </span>
+            </gc></pre>
         `),
 
         page("Evaluation During Compilation", `
