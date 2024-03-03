@@ -2617,21 +2617,16 @@ proc main() {
             (where the value is the parsed integer) will be returned.
             If unsuccessful, the variant <c>#none</c> (where the value is <c>unit</c>) will be returned.
             <br><br>
-            To be parsed by this procedure, <c>source</c> needs to be a string
-            where the first code point may be <c>-</c>, and all other code points
-            must be an ASCII digit (<c>0</c>, <c>1</c>, ..., <c>8</c> or <c>9</c>).
+            <img src="std_str_parse_int.png">
             <br><br><br>
             <sh><c>parse_flt(source)</c></sh>
             <br><br>
-            Attempts to parse <c>source</c> as a float.
+            Attempts to parse <c>source</c> as a float (case-insensitive).
             If successful, the variant <c>#some</c>
             (where the value is the parsed float) will be returned.
             If unsuccessful, the variant <c>#none</c> (where the value is <c>unit</c>) will be returned.
             <br><br>
-            To be parsed by this procedure, <c>source</c> needs to be a string
-            where the first code point may be <c>-</c>, and all other code points
-            must be an ASCII digit (<c>0</c>, <c>1</c>, ..., <c>8</c> or <c>9</c>)
-            or up to one dot <c>.</c>.
+            <img src="std_str_parse_flt.png">
         `),
 
         page("Time", `

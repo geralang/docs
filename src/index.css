@@ -221,6 +221,12 @@ a:hover {
     box-sizing: border-box;
 }
 
+#reader img {
+    background: var(--text);
+    border-radius: 0.5rem;
+    max-width: 100%;
+}
+
 #reader a:hover {
     color: var(--accent-light);
 }
