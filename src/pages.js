@@ -1845,7 +1845,7 @@ proc weekday(n) {
         `),
 
         page("Iterators", `
-            <h>The <c>std::iter</c>-Moduke</h>
+            <h>The <c>std::iter</c>-Module</h>
             <br><br>
             This module contains procedures for working with iterators.
             Iterators are Gera's alternative to loops.
