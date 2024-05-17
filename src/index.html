@@ -1,34 +1,91 @@
 <!doctype html>
 <html>
     <head>
-        <meta charset="UTF-8">
+        <meta charset="utf-8">
+        <link rel="icon" type="image/x-icon" href="logo.ico">
         <meta property="og:title" content="Gera">
         <meta property="og:type" content="website">
-        <meta property="og:description" content="A procedural, statically typed, garbage collected programming language without type annotations.">
-        <!--<meta property="og:image" content="https://geralang.netlify.app/banner.png">-->
+        <meta property="og:description" content="A high-level, procedural, compiled and garbage-collected programming language without type annotations.">
+        <meta property="og:image" content="https://geralang.netlify.app/logo-bg.png">
         <meta property="og:url" content="http://geralang.netlify.app/index.html">
-        <meta name="twitter:card" content="summary_large_image">
-        <title>The Gera Programming Langauge</title>
-        <link rel="icon" type="image/x-icon" href="logo.png">
+        <meta name="twitter:card" content="summary">
+        <title>Gera Programming Language</title>
         <link rel="stylesheet" href="index.css">
         <link rel="stylesheet" href="highlighting.css">
-        <script type="module" src="highlighting.js"></script>
-        <script src="compiler.js"></script>
-        <script src="pages.js"></script>
         <script src="index.js"></script>
+        <script src="highlighting.js" type="module"></script>
     </head>
     <body>
-        <div id="navigator">
-            <div id="navigator-content">
-                <div id="navigator-toggle" onclick="toggleNavigator()">Toggle</div>
-                <img id="navigator-logo" src="logo.png">
-                <!-- gets loaded dynamically -->
+        <div id="content">
+            <div id="gera-banner">
+                <img src="logo.svg" id="gera-logo">
+                <div id="gera-banner-text-wrapper">
+                    <div id="gera-banner-text">
+                        <div id="gera-banner-header">
+                            Gera
+                        </div>
+                        A high-level, procedural, compiled and garbage-collected 
+                        programming language without type annotations.
+                    </div>
+                </div>
             </div>
+            <p>
+                Gera is a language that attempts to be simple while still being
+                nice to use.
+            </p>
+            <p>
+                The language is statically typed, 
+                meaning type errors are found during compilation of the program.
+                It also has full type inference, meaning
+                that type annotations are not even a part of the language syntax.
+            </p>
+            <p>
+                Instead of null values and exceptions, Gera uses tagged unions.
+                Tagged unions are a way to represent "one of multiple possible types of values",
+                meaning they can be used to represent optional values, result values 
+                and whatever else you can come up with.
+            </p>
+            <p>
+                Loops don't exist either. Instead, iterators are used.
+                Iterators are simply sequences of values, such as the items in an array
+                or the numbers in the Fibonacci sequence.
+                The standard library provides a plethora of operations that can be
+                used with iterators, such as filtering items out, 
+                converting each item to another, 
+                reducing the sequence to a single value and much more.
+            </p>
+            <p><br></p>
+            <!--
+            <a class="link">
+                <div class="link-title">
+                    Language Tour 
+                </div>
+                Learn more about the Gera programming language.
+            </a>
+            -->
+            <a class="link" target="_blank" href="./docs/std.html">
+                <div class="link-title">
+                    Standard Library
+                </div>
+                Read the documentation for the standard library.
+            </a>
+            <a class="link" target="_blank" href="https://github.com/geralang">
+                <div class="link-title">
+                    Github
+                </div>
+                Visit Gera on Github.
+            </a>
+            <a class="link" target="_blank" href="https://discord.gg/DYRDg7fq82">
+                <div class="link-title">
+                    Discord
+                </div>
+                Join the Gera Discord server.
+            </a>
         </div>
-        <div id="reader-wrapper">
-            <div id="reader">
-                <!-- gets loaded dynamically -->
-            </div>
+        <div id="example">
+            <div id="example-name"></div>
+            <hr id="example-div">
+            <div id="example-body"></div>
         </div>
     </body>
 </html>

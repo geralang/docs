@@ -1,232 +1,124 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@600&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,400;0,700;1,400;1,700&display=swap");
 
 :root {
-    --background: #1f1717;
-    --text: #fcf5ed;
-    --accent-dark: #625195;
-    --accent-light: #b85995;
-
-    --logo-size: 20rem;
-    --title-margin: 5rem;
-}
-
-*::selection {
-    background-color: var(--background);
+    --primary-dark: #1f1717;
+    --primary-light: #fcf5ed;
+    --accent: #fcf5ed44;
+    --secondary-dark: #625195;
+    --secondary-light: #c05895;
 }
 
 body {
+    position: relative;
     width: 100vw;
-    height: 100vh;
+    min-height: 100vh;
+    height: fit-content;
     margin: 0px;
+    background: 
+        linear-gradient(to top right, var(--secondary-light), 60%, var(--secondary-dark));
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow-x: hidden;
+}
+
+#example {
+    position: fixed;
+    min-width: 25vw;
+    min-height: 50vh;
+    top: 50vh;
+    left: 75vw;
+    transform: translate(-50%, -50%);
+    background: var(--primary-dark);
+    border-radius: 1rem;
+    padding: 1rem;
+    outline: 1px solid var(--accent);
+    outline-offset: -0.5rem;
+    color: var(--primary-light);
+    font-family: "Noto Sans Mono", monospace;
+    box-shadow: 0 0 0.5rem #000000aa;
+}
+
+#example-name {
+    padding: 0.5rem;
+    color: var(--accent);
+}
+
+#example-div {
+    outline: none;
+    border: none;
+    background: var(--accent);
+    height: 1px;
+    margin: 0.5rem 0 0.5rem 0;
+}
+
+#example-body {
+    white-space: pre-wrap;
+    padding: 0.5rem;
+}
+
+#content {
+    width: 50%;
+    min-height: 100vh;
+    background: var(--primary-dark);
+    color: var(--primary-light);
+    font-family: "Rubik", sans-serif;
+    padding: 3rem;
+    box-sizing: border-box;
+    box-shadow: 0 0 0.5rem #000000aa;
+}
+
+#gera-banner {
+    margin-bottom: 3rem;
+    box-sizing: border-box;
+    height: 10rem;
     display: flex;
     flex-direction: row;
-    background-color: var(--background);
-    font-family: Rubik;
-    color: var(--text);
 }
 
-a {
-    font-weight: bold;
-    text-decoration: underline;
-    color: var(--text);
+#gera-logo {
+    height: 100%;
 }
 
-a:hover {
-    color: var(--background);
-    cursor: pointer;
+#gera-banner-text-wrapper {
+    position: relative;
+    flex-grow: 1;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    height: 100%;
 }
 
-.codespan {
-    background-color: var(--text);
-    color: var(--background);
-    border-radius: 0.25rem;
-    font-family: "Noto Sans Mono", monospace;
-    padding-left: 0.25rem;
-    padding-right: 0.25rem;
+#gera-banner-text {
+    position: absolute;
+    top: 50%;
+    transform: translate(0%, -50%);
 }
 
-*::selection {
-    background-color: var(--accent-light);
-}
-
-.heading {
-    font-size: 2rem;
+#gera-banner-header {
+    font-size: 2.5rem;
     font-weight: bold;
 }
 
-.subheading {
+.link {
+    display: block;
+    background: none;
+    border: none;
+    outline: 1px solid var(--accent);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    color: inherit;
+    text-decoration: inherit;
+}
+
+.link-title {
     font-size: 1.5rem;
     font-weight: bold;
 }
 
-.playground {
-    position: relative;
-    width: 100%;
-}
-
-.playground *::selection {
-    background-color: var(--accent-light);
-    color: var(--text);
-}
-
-.playground-editor-wrapper {
-    position: relative;
-    width: 100%;
-    background-color: var(--background);
-    margin-bottom: 0.5rem;
-}
-
-.playground-editor {
-    position: relative;
-    width: 100%;
-    resize: none;
-    box-sizing: border-box;
-    padding: 1rem;
-    overflow: hidden;
-    outline: none;
-    border: none;
-    font-family: "Noto Sans Mono", monospace;
-    background-color: rgba(0, 0, 0, 0);
-    color: rgba(0, 0, 0, 0);
-    min-height: 5rem;
-    overflow-wrap: break-word;
-    line-height: 1.2rem;
-    z-index: 1;
-    caret-color: var(--accent-light);
-    font-size: 1rem;
-    white-space: pre-wrap;
-    border-radius: 0.5rem;
-    outline: 0.1rem solid var(--text);
-}
-
-.playground-editor:focus {
-    outline: 0.25rem solid var(--accent-light);
-}
-
-.playground-editor-highlighted {
-    position: absolute;
-    width: 100%;
-    box-sizing: border-box;
-    padding: 1rem;
-    font-family: "Noto Sans Mono", monospace;
-    overflow-wrap: break-word;
-    line-height: 1.2rem;
-    font-size: 1rem;
-    white-space: pre-wrap;
-}
-
-.playground-run-button {
-    position: absolute;
-    right: 0.25rem;
-    top: 0.25rem;
-    border: none;
-    outline: none;
-    font-family: Rubik;
-    font-size: 1rem;
-    padding: 0.5rem;
-    border-radius: 0.5rem;
-    background-color: var(--text);
-    color: var(--background);
-    z-index: 2;
-}
-
-.playground-run-button:hover {
-    color: var(--text);
-    background-color: var(--background);
-    outline: 1px solid var(--text);
-}
-
-.playground-output {
-    width: 100%;
-    white-space: pre-wrap;
-    background-color: var(--background);
-    font-size: 1rem;
-    padding: 0.5rem;
-    box-sizing: border-box;
-    border-radius: 0.5rem;
-    max-height: 20rem;
-    overflow-y: auto;
-    font-family: "Noto Sans Mono", monospace;
-}
-
-.playground-output:empty {
-    display: none;
-}
-
-.playground-output-error {
-    color: var(--accent-light);
-}
-
-#navigator {
-    width: 20rem;
-    height: 100vh;
-    background-color: var(--accent-dark);
-    border-radius: 0px 1rem 1rem 0px;
-    padding: 1rem;
-    box-sizing: border-box;
-    position: relative;
-}
-
-#navigator-toggle {
-    position: absolute;
-    transform: translate(100%, 0%);
-    right: 0px;
-    font-size: 1rem;
-    padding: 0.5rem;
-    background-color: var(--text);
-    border-radius: 0px 0.5rem 0.5rem 0px;
-    color: var(--background);
-    cursor: pointer;
-}
-
-#navigator-toggle:hover {
-    background-color: var(--background);
-    color: var(--text);
-    outline: 1px solid var(--text);
-}
-
-#navigator-content {
-    width: 100%;
-    height: 100%;
-    overflow-y: auto;
-}
-
-#navigator-logo {
-    width: 25%;
-    margin-left: 50%;
-    transform: translate(-50%, 0px);
-    background-color: var(--background);
-    border-radius: 50%;
-}
-
-#reader-wrapper {
-    flex-grow: 1;
-    min-height: 100%;
-    padding: 1rem;
-    box-sizing: border-box;
-    overflow-y: auto;
-    overflow-x: hidden;
-}
-
-#reader {
-    margin-left: 50%;
-    transform: translate(-50%, 0%);
-    width: min(100vw, 45vmax);
-    min-height: 100%;
-    background-color: var(--background);
-    border-radius: 1rem;
-    padding: 2rem;
-    box-sizing: border-box;
-}
-
-#reader img {
-    background: var(--text);
-    border-radius: 0.5rem;
-    max-width: 100%;
-}
-
-#reader a:hover {
-    color: var(--accent-light);
+.link:hover {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    outline: 1px solid var(--primary-light);
 }
