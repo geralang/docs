@@ -628,26 +628,137 @@ proc main() = io::inputln()
     |> io::println()
 </gcb>
 </p>
-        
         `
     },
 
     {
         name: "Strings",
         id: "strings",
-        body: `[todo]`
+        body: `
+<p>
+Strings in Gera are simply an array of Unicode code points.
+A string value can be created by putting the string's contents inbetween
+double quotes:
+<gcb>\
+mod example
+
+proc main() {
+    std::io::println("Hello, world!")
+}
+</gcb>
+</p>
+<p>
+String literals can go across multiple lines.
+<p>
+</p>
+The backspace has a number of affects on the contents of a string:
+<ul>
+    <li>
+        <c>\\</c> followed by a new line will not include the new line in the string.
+    </li>
+    <li>
+        <c>\\0</c> results in the null character at that position in the string.
+    </li>
+    <li>
+        <c>\\t</c> results in a horizontal tab at that position in the string.
+    </li>
+    <li>
+        <c>\\n</c> results in a line feed at that position in the string.
+    </li>
+    <li>
+        <c>\\r</c> results in a carriage feed at that position in the string.
+    </li>
+    <li>
+        <c>\\xNN</c> results in the byte denoted by the two hexadecimal digits 
+        <c>NN</c> at that position in the string.
+    </li>
+</ul>
+</p>
+        `
     },
 
     {
         name: "Unit",
         id: "unit",
-        body: `[todo]`
+        body: `
+<p>
+The unit type in Gera is a type which only has a single value, this being <c>unit</c>.
+This also means that there is no information associated with this type, since
+it can only ever be one value. One could also consider <c>unit</c> to represent there
+not being a value it all.
+</p>
+
+<h>Return Values</h>
+<p>
+The unit type can be useful for when you want to return nothing from a procedure.
+In fact, when you don't return anything from a procedure at all,
+the procedure is assumed to return <c>unit</c>. 
+<gcb>\
+mod example
+
+proc main() {
+    return unit
+    std::io::println("noone will ever see this")
+}
+</gcb>
+</p>
+        
+        `
     },
 
     {
         name: "Branching",
         id: "branching",
-        body: `[todo]`
+        body: `
+<h>Conditional Branching</h>
+<p>
+Conditional branching is used to execute some part of your program only
+if a certain condition is met. This can be achieved in Gera using <c>case</c>,
+followed by the condition (which must evaluate to a boolean) and <c>-></c>:
+<gcb>\
+mod example
+
+proc fib(n) {
+    case n <= 1 -> return n
+    return fib(n - 1) + fib(n - 2)
+}
+</gcb>
+<c>else</c> can be used to execute a part of your program if the previous 
+condition was not met:
+<gcb>\
+mod example
+
+proc fizzbuzz(n) {
+    case n % 3 == 0 && n % 5 == 0 -> return "FizzBuzz"
+    else case n % 3 == 0 -> return "Fizz"
+    else case n % 5 == 0 -> return "Buzz"
+    else return as_str(n)
+}
+</gcb>
+</p>
+
+<h>Value-Based Branching</h>
+<p>
+<c>case</c> can also be used to execute one of multiple possible parts 
+of your program based on a value. <c>else</c> then only gets executed if none
+of the possible branches was executed.
+<gcb>\
+mod example
+
+proc weekday(n) {
+    case n {
+        0 -> return "Monday"
+        1 -> return "Tuesday"
+        2 -> return "Wednesday"
+        3 -> return "Thursday"
+        4 -> return "Friday"
+        5 -> return "Saturday"
+        6 -> return "Sunday"
+    } else return "<invalid input!>"
+}
+</gcb>
+</p>
+        `
     },
 
     {

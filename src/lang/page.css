@@ -17,6 +17,7 @@ body {
     margin: 0px;
     background: var(--primary-dark);
     color: var(--primary-light);
+    overflow-x: hidden;
 }
 
 a {
