@@ -22,12 +22,10 @@ proc main() = fib()
     |> take(10)
     |> for_each(println)`;
 
-window.onload = () => {
-    const name = document.getElementById("example-name");
-    const body = document.getElementById("example-body");
-    name.innerText = example_name;
-    highlighting.add_onload(() => {
-        body.innerHTML = highlighting.highlight(example_body, "source.gera")
-            + "⠀";
-    });
-};
+const name_e = document.getElementById("example-name");
+const body_e = document.getElementById("example-body");
+name_e.innerText = example_name;
+body_e.innerHTML = example_body;
+window.onload = () => highlighting.add_onload(() => {
+    body_e.innerHTML = highlighting.highlight(example_body, "source.gera");
+});
