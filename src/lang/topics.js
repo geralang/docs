@@ -754,7 +754,7 @@ proc weekday(n) {
         4 -> return "Friday"
         5 -> return "Saturday"
         6 -> return "Sunday"
-    } else return "<invalid input!>"
+    } else return "[invalid input!]"
 }
 </gcb>
 </p>
