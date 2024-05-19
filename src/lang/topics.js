@@ -509,7 +509,8 @@ proc main() {
 
 <h>Operations</h>
 <p>
-The following operations can be used with both types of numbers:
+The following operations can be used with both integers and floats 
+(although they may not both be involved in the same operation):
 <ul>
     <li>
         <c>-x</c> negates <c>x</c> and results in the result.
@@ -1037,7 +1038,7 @@ Imagine them as enums, but every enum variant holds a single value,
 and the types of the values may also differ.
 </p>
 <p>
-Let's consider <a href="../docs/std/io.html#read_dir"><c>std::io::read_dir</c></a>,
+Let's consider <a target="_blank" href="../docs/std/io.html#read_dir"><c>std::io::read_dir</c></a>,
 which is a procedure that takes a path string and attempts to read the contents of the directory    
 at that path. It's return type is <c>#ok [str] | #err str</c>, which means it's
 a union of:
@@ -1081,6 +1082,8 @@ in an error. Adding an <c>else</c>-branch will handle all other union variants:
 <gcb>\
 mod example
 
+use std::io::println
+
 // allows any union variant
 // type of 'pet' would be 
 // '(#cat { hunger = float, ... } | #dog { volume = float, ... } | ...)'
@@ -1088,7 +1091,9 @@ mod example
 proc feed(pet) {
     case pet {
         #cat c -> c.hunger = 0.0
-        #dog d -> d.volume = 1.0 
+        #dog d -> d.volume = 1.0
+        // you can also not specify a variable for the value to ignore it
+        #dodo -> println("wtf how do you have that")
     } else {
         // else nothing to do
     }
@@ -1128,7 +1133,7 @@ a union value has some specific variant. If it is not that variant,
 the union value will be returned immediately. If it is that variant,
 the expression results in the value of that variant.
 For example, let's say we want to read a file, parse the contents
-as a float, compute the square root and return it.
+as a float, compute the square root and return it:
 <gcb>\
 mod example
 
@@ -1151,7 +1156,8 @@ proc file_sqrt(path) = path
 <p>
 Using <c>==</c> with union values will first check if they are the same variant
 and if they are compare their values using <c>==</c>. To only check if the 
-variants match you may use the built-in <c>tag_eq</c>-procedure.
+variants match (without checking the value) you may use the 
+built-in <c>tag_eq</c>-procedure.
 <gcb>\
 mod example
 
@@ -1171,31 +1177,294 @@ proc main() {
 }
 </gcb>
 </p>
+
+<h>Optional Values</h>
+<p>
+Just like demonstrated above, one can use a union to represent    
+optional values.
+By convention an optional value is simply of type <c>#some T | #none unit</c>
+(where <c>T</c> is the actual type of the value).
+The 
+<a target="_blank" href="../docs/std/opt.html"><c>std::opt</c></a>-module 
+provides general procedures for working with these.
+</p>
+
+<h>Result Values</h>
+<p>
+Result values are values that can either be an actual result value or an error value.
+By convention a result value is simply of type <c>#ok V | #err E</c>
+(where <c>V</c> is the actual value type and <c>E</c> the error type).
+The 
+<a target="_blank" href="../docs/std/res.html"><c>std::res</c></a>-module 
+provides general procedures for working with these.
+</p>
         `
-    },
-
-    {
-        name: "Optionals",
-        id: "optionals",
-        body: `[todo]`
-    },
-
-    {
-        name: "Results",
-        id: "results",
-        body: `[todo]`
     },
 
     {
         name: "Functions",
         id: "functions",
-        body: `[todo]`
+        body: `
+<p>
+Functions (or closures) are essentially procedures which are values. 
+They also have access to variables declared outside of their own body.
+</p>
+
+<h>Creating Functions</h>
+<p>
+Functions can be created by writing a list of parameter names inbetween two
+pipes, followed by either a block of statements in curly braces or an expression
+to return:
+<gcb>\
+mod example
+
+use std::io::println
+
+proc main() {
+    val greet = |thing| {
+        case length(thing) == 0 -> return unit
+        "Hello, "
+            |> concat(thing)
+            |> concat("!")
+            |> println()
+    }
+    val add = |x, y| x + y
+}
+</gcb>
+Using an arrow instead of the argument list creates a function with a
+single argument called <c>it</c>:
+<gcb>\
+mod example
+
+proc main() {
+    val double = -> it * 2.0
+}
+</gcb>
+One can also use any procedure as a function by simply writing it's name:
+<gcb>\
+mod example
+
+proc double(x) = x * 2.0
+
+proc main() {
+    val d = double // 'd' is now a function that executes 'double'
+}
+</gcb>
+</p>
+
+<h>Calling Functions</h>
+<p>
+Functions can be called just like procedures:
+<gcb>\
+mod example
+
+use std::io::println
+
+proc main() {
+    val greet = |thing| {
+        case length(thing) == 0 -> return unit
+        "Hello, "
+            |> concat(thing)
+            |> concat("!")
+            |> println()
+    }
+    greet("world") // prints 'Hello, world!'
+    greet("Gera") // prints 'Hello, Gera!'
+    val add = |x, y| x + y
+    println(add(5, 10)) // prints '15'
+    println(add(3, 5)) // prints '8'
+}
+</gcb>
+<gcb>\
+mod example
+
+use std::io::println
+
+proc main() {
+    mut x = 0
+    val add = |y| x + y
+    println(add(5)) // prints '5'
+    x = 25
+    println(add(3)) // prints '28'
+}
+</gcb>
+<gcb>\
+mod example
+
+use std::io::println
+
+proc main() {
+    mut i = 0
+    val next = || {
+        val n = i
+        i = i + 1
+        return n
+    }
+    println(next()) // prints '0'
+    println(next()) // prints '1'
+    println(next()) // prints '2'
+    println(next()) // prints '3'
+}
+</gcb>
+</p>
+
+<h>Methods</h>
+<p>
+Methods are simply functions that are values of members of an object,
+and which take an object as the first parameter (this being the object they
+are called as a method of).
+A method can be called using the method pipe operator <c>.&gt;</c>,
+with which <c>x .&gt; some_method(y)</c> expands to <c>x.some_method(x, y)</c>:
+<gcb>\
+mod example
+
+use std::io::println
+
+proc create_cat(name, age) = {
+    name, age,
+    hunger = 0.0,
+
+    // by convention functions which are supposed to act as methods
+    // take 'self' as the first parameter
+    feed = |self, amount| {
+        self.hunger = self.hunger - amount
+    }
+}
+
+proc main() {
+    val my_cat = create_cat("Cookie", 2)
+    my_cat.hunger = 0.6
+    println(my_cat.hunger) // prints '0.6'
+    my_cat .> feed(0.4)
+    println(my_cat.hunger) // prints '0.2'
+}
+</gcb>
+</p>
+
+<h>Procedures VS. Functions</h>
+<p>
+There is one big difference between functions and procedures.
+Consider the following procedure:
+<gcb>\
+mod example
+
+proc add(x, y) = x + y
+
+proc main() {
+    add(5, 10)
+    add(3.2, 4.35)
+}
+</gcb>
+In the above code <c>add</c> is called both with integers and floats.
+This is completely valid. However, the following is not:
+<gcb>\
+mod example
+
+proc main() {
+    val add = |x, y| x + y
+    add(5, 10)     // this is fine
+    add(3.2, 4.35) // this doesn't work!
+}
+</gcb>
+Why doesn't this work? Well, it's quite simple. When the function for <c>add</c>
+is created, it starts off with being a function that takes two numeric values 
+and adds them. However, after the first call (which passes integers),
+the function has now become a function that takes two integers and adds them.
+When we now attempt to pass two floats, a type error occurs, since the
+function already takes integers. In this case, you could create
+two separate functions:
+<gcb>\
+mod example
+
+proc add() = |x, y| x + y
+
+proc main() {
+    add()(5, 10)
+    add()(3.2, 4.35)
+}
+</gcb>
+</p>
+        `
     },
 
     {
         name: "Iterators",
         id: "iterators",
-        body: `[todo]`
+        body: `
+<p>
+Iterators in Gera simply are functions which return the next element in a
+sequence. Specifically they are functions which have a return type of 
+<c>#next T | #end unit</c> (where <c>T</c> is the type of the sequence values).
+</p>
+
+<p>
+For example, one could write a simple infinite iterator over the Fibonacci sequence:
+<gcb>\
+mod example
+
+proc fib() {
+    mut a = 0
+    mut b = 1
+    // return the iterator (the function that returns the next element)
+    return || {
+        // classic Fibonacci shenanigans
+        val c = a + b
+        a = b
+        b = c
+        // return the next element
+        return #next c
+    }
+}
+</gcb>
+</p>
+
+<p>
+Or how about a procedure that takes an iterator and returns a new iterator
+over the items in the given iterator, only that each of them is passed through
+a given function?
+<gcb>\
+// there is no real need for us to write this ourselves,
+// it's already in 'std::iter'
+proc map(src, f) = || {
+    case f() {
+        #next v -> return #next f(v)
+        #end -> return #end unit
+    }
+}
+</gcb>
+</p>
+
+<p>
+You can easily create iterators over integer ranges by using <c>start..end</c>
+(excludes end) and <c>start..=end</c> (includes end).
+</p>
+
+<p>
+Using the procedures provided by the module 
+<a target="_blank" href="../docs/std/iter.html"><c>std::iter</c></a>,
+you can achieve anything a loop could:
+<gcb>\
+use std::iter::find
+use std::opt::is_none
+
+proc is_prime(n) = 2..(n / 2)
+    |> find(-> n % it == 0)
+    |> is_none()
+</gcb>
+<gcb>\
+use std::math::min
+use std::iter::find
+use std::str::(at, codepoint_at)
+use std::opt::(map, unwrap_or_else)
+
+proc strcmp(a, b) = 0..min(length(a), length(b))
+    |> find(|i| at(a, i) != at(b, i))
+    |> map(|i| codepoint_at(a, i) - codepoint_at(b, i))
+    |> unwrap_or_else(|| length(a) - length(b))
+</gcb>
+</p>
+
+        `
     },
 
     {
