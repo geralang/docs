@@ -568,6 +568,22 @@ proc main() {
 }
 </gcb>
 </p>
+
+<h>Conversions</h>
+<p>
+Numbers can be converted to integers and floats using the built-in <c>as_int</c>-
+and <c>as_flt</c>-procedures. 
+Note that <c>as_int</c> truncates floats, rounding them towards zero.
+<gcb>\
+mod example
+
+proc main() {
+    val pi = 3.1415
+    println(as_int(pi)) // prints '3'
+    println(as_flt(25) + 0.25) // prints '25.25'
+}
+</gcb>
+</p>
         `
     },
 
@@ -636,7 +652,7 @@ proc main() = io::inputln()
         id: "strings",
         body: `
 <p>
-Strings in Gera are simply an array of Unicode code points.
+Strings in Gera are simply a completely immutable array of Unicode code points.
 A string value can be created by putting the string's contents inbetween
 double quotes:
 <gcb>\
@@ -674,6 +690,77 @@ The backspace has a number of affects on the contents of a string:
     </li>
 </ul>
 </p>
+
+<h>Length</h>
+<p>
+Get the length of a string in unicode code points by using the built-in
+<c>length</c>-procedure:
+<gcb>\
+mod example
+
+use std::io::println
+
+proc main() {
+    val greeting = "Hello, world!"
+    println(length(greeting)) // prints '13'
+}
+</gcb>
+</p>
+
+<h>Substrings</h>
+<p>
+Create a new string from a part of another string using the built-in 
+<c>substring</c>-procedure.
+Note that negative indices will have the length of the source string added to them.
+<gcb>\
+mod example
+
+use std::io::println
+
+proc main() {
+    val greeting = "Hello, world!"
+    println(substring(greeting, 0, 4)) // prints 'Hell'
+    println(substring(greeting, 7, -1)) // prints 'world'
+}
+</gcb>
+</p>
+
+<h>String Concatenation</h>
+<p>
+Join two strings together to create a new string by using the built-in 
+<c>concat</c>-procedure.
+<gcb>\
+mod example
+
+use std::io::println
+
+proc greet(thing) = "Hello, "
+    |> concat(thing)
+    |> concat("!")
+
+proc main() {
+    println(greet("world")) // prints 'Hello, world!'
+}
+</gcb>
+</p>
+
+<h>Conversion to String</h>
+<p>
+Any value can be converted to a string by using the built-in <c>as_str</c>-procedure:
+<gcb>\
+mod example
+
+use std::io::println
+
+proc main() {
+    val age = 23
+    "You are "
+        |> concat(as_str(age))
+        |> concat(" years old.")
+        |> println() // prints 'You are 23 years old.'
+}
+</gcb>
+</p>
         `
     },
 
@@ -701,6 +788,12 @@ proc main() {
     std::io::println("noone will ever see this")
 }
 </gcb>
+</p>
+
+<h>Equality</h>
+<p>
+Note that since the unit type only has one value, using <c>==</c> on <c>unit</c>
+always results in <c>true</c> and <c>!=</c> always results in <c>false</c>.
 </p>
         
         `
@@ -764,19 +857,321 @@ proc weekday(n) {
     {
         name: "Objects",
         id: "objects",
-        body: `[todo]`
+        body: `
+<p>
+Objects can be used to represent more complex data structures.
+They can hold named members with a value for each member.
+Objects are heap-allocated and referenced, meaning an object may have multiple
+references to it and can be mutated and accessed from each of them.
+</p>
+
+<h>Object Literals</h>
+<p>
+Objects can be created by simply writing a list of name-value pairs inside of
+curly braces. The expression results in a reference to the object.
+<gcb>\
+mod example
+
+proc main() {
+    // member names are ususally in snake_case
+    val my_pet = { name = "Cookie", age = 5 }
+}
+</gcb>
+Only writing the name of a member without a value makes the assumption that 
+there is a variable with the same name, setting the member to that value.
+<gcb>\
+mod example
+
+// returns a new object with the given values as members
+proc create_cat(name, age) = { name, age }
+</gcb>
+</p>
+
+<h>Accessing Objects</h>
+<p>
+To get or set a member of an object, simply use the <c>.name</c>-syntax:
+<gcb>\
+mod example
+
+use std::io::println
+
+proc main() {
+    val my_pet = { name = "Cookie", age = 5 }
+    println(my_pet.name) // prints 'Cookie'
+    my_pet.name = "Snowball"
+    println(my_pet.name) // prints 'Snowball'
+}
+</gcb>
+</p>
+
+<h>Equality</h>
+<p>
+When objects are compared with <c>==</c> and they have the same member types,
+all of their members will be compared with <c>==</c> as well, even if the
+references might refer to different objects. 
+To check if two references refer to the exact same object (meaning modifying
+the object behind one reference also modifies the object behind the other)
+use the built-in <c>addr_eq</c>-procedure.
+<gcb>\
+mod example
+
+use std::io::println
+
+proc box(v) = { value = v }
+
+proc main() {
+    val a = box(5)
+    val b = box(10)
+    val c = box(5)
+    val d = a
+    println(a == b) // prints 'false'
+    println(a == c) // prints 'true'
+    println(a == d) // prints 'true'
+    println(addr_eq(a, b)) // prints 'false'
+    println(addr_eq(a, c)) // prints 'false'
+    println(addr_eq(a, d)) // prints 'true'
+}
+</gcb>
+</p>
+        `
     },
 
     {
         name: "Arrays",
         id: "arrays",
-        body: `[todo]`
+        body: `
+<p>
+Arrays can be used to hold a dynamic number of values of the same type.
+Although arrays may not be resized after they were created, 
+they can be created with any length.
+Just like objects arrays are heap-allocated and referenced, 
+meaning an object may have multiple references to it and can be 
+mutated and accessed from each of them.
+</p>
+
+<h>Array Literals</h>
+<p>
+To create an array with specific values for each element, you can simply
+write the values as a list inside of square brackets:
+<gcb>\
+mod example
+
+proc main() {
+    val primes = [2, 3, 5, 7, 11]
+}
+</gcb>
+To instead create an array by repeating a value a specific amount of times,
+you can use the <c>[value; size]</c>-syntax:
+<gcb>\
+mod example
+
+proc main() {
+    val greetings = ["Hello!"; 16]
+}
+</gcb>
+</p>
+
+<h>Indexing into Arrays</h>
+<p>
+To get or set an element of an array at a specific position, write the position
+(starting at 0) inside of square brackets:
+<gcb>\
+mod example
+
+use std::io::println
+
+proc main() {
+    val primes = [2, 3, 5, 7, 11]
+    println(primes[0]) // prints '2'
+    println(primes[2]) // prints '5'
+    println(primes[4]) // prints '11'
+}
+</gcb>
+The index may also be negative, in which case the length of the array will
+be added to it:
+<gcb>\
+mod example
+
+use std::io::println
+
+proc main() {
+    val primes = [2, 3, 5, 7, 11]
+    println(primes[-1]) // prints '11'
+    println(primes[-2]) // prints '7'
+    println(primes[-3]) // prints '5'
+}
+</gcb>
+</p>
+
+<h>Length</h>
+<p>
+Just like with strings, <c>length</c> may be used to get the length of an array:
+<gcb>\
+mod example
+
+use std::io::println
+
+proc main() {
+    val primes = [2, 3, 5, 7, 11]
+    println(length(primes)) // prints '5'
+}
+</gcb>
+</p>
+
+<h>Equality</h>
+<p>
+Just like with objects, <c>==</c> also compares all items (if the lengths match),
+and <c>addr_eq</c> may be used to check if the references reference the same array.
+</p>
+
+        `
     },
 
     {
         name: "Unions",
         id: "unions",
-        body: `[todo]`
+        body: `
+<p>
+Unions in Gera are used to represent one of multiple different types.
+Imagine them as enums, but every enum variant holds a single value,
+and the types of the values may also differ.
+</p>
+<p>
+Let's consider <a href="../docs/std/io.html#read_dir"><c>std::io::read_dir</c></a>,
+which is a procedure that takes a path string and attempts to read the contents of the directory    
+at that path. It's return type is <c>#ok [str] | #err str</c>, which means it's
+a union of:
+<ul>
+    <li>the variant <c>ok</c>, having a value of type <c>[str]</c> (array of string)</li>
+    <li>the variant <c>err</c>, having a value of type <c>str</c> (string)</li>
+</ul>
+Note that this means it will return one of the two, not both.
+</p>
+
+<h>Variant-Based Branching</h>
+<p>
+Just like <c>case</c> can be used to execute a specific branch based on some value,
+it can also be used to execute a specific branch based on the variant of some union value.
+For example, we can use it to handle both possible variants of the return value 
+of <c>std::io::read_dir</c>:
+<gcb>\
+mod example
+
+use std::io::println
+
+proc main() {
+    case std::io::read_dir("test") {
+        #err error -> {
+            "Unable to read directory: "
+                |> concat(error)
+                |> println()
+        }
+        #ok contents -> {
+            "Directory has "
+                |> concat(as_str(length(contents)))
+                |> concat(" items")
+                |> println()
+        }
+    }
+}
+</gcb>
+Should a union be handled like this, it is enforced that it may only have
+handled variants. In other words - unhandled union variants will always result
+in an error. Adding an <c>else</c>-branch will handle all other union variants:
+<gcb>\
+mod example
+
+// allows any union variant
+// type of 'pet' would be 
+// '(#cat { hunger = float, ... } | #dog { volume = float, ... } | ...)'
+// ('...' means that the variant / object may have more members / variants)
+proc feed(pet) {
+    case pet {
+        #cat c -> c.hunger = 0.0
+        #dog d -> d.volume = 1.0 
+    } else {
+        // else nothing to do
+    }
+}
+</gcb>
+</p>
+
+<h>Creating Union Values</h>
+<p>
+Unions can be created by simply instantiating variants using the 
+<c>#name value</c> syntax. The union type is then the sum of all the possible
+union variants.
+<gcb>\
+mod example
+
+proc weekday(n) {
+    case n {
+        0 -> return #some "Monday"
+        1 -> return #some "Tuesday"
+        2 -> return #some "Wednesday"
+        3 -> return #some "Thursday"
+        4 -> return #some "Friday"
+        5 -> return #some "Saturday"
+        6 -> return #some "Sunday"
+    } else return #none unit
+}
+</gcb>
+In the above code, the procedure can either return the variant <c>some</c> with
+a string value or the variant <c>none</c> with the unit value.
+This means that the procedure returns the union <c>#some str | #none unit</c>.
+</p>
+
+<h>Variant Unwrap Operator</h>
+<p>
+The question mark operator can be used to make the assumption that
+a union value has some specific variant. If it is not that variant,
+the union value will be returned immediately. If it is that variant,
+the expression results in the value of that variant.
+For example, let's say we want to read a file, parse the contents
+as a float, compute the square root and return it.
+<gcb>\
+mod example
+
+proc file_sqrt(path) = path
+    // return type: '#ok str | #err str'
+    |> std::io::read_file()
+    // return type: '#some str | #none unit' 
+    |> std::res::get_ok() 
+    // get the value or return early
+    ?some 
+    // return type: '#some float | #none unit'
+    |> std::str::parse_flt() 
+    // get the value or return early
+    ?some
+    |> std::math::sqrt()
+</gcb>
+</p>
+
+<h>Equality</h>
+<p>
+Using <c>==</c> with union values will first check if they are the same variant
+and if they are compare their values using <c>==</c>. To only check if the 
+variants match you may use the built-in <c>tag_eq</c>-procedure.
+<gcb>\
+mod example
+
+use std::io::println
+
+proc main() {
+    val a = #cat { name = "Snowball", hunger = 0.2 }
+    val b = #cat { name = "Cookie", hunger = 0.6 }
+    val c = #dog { name = "Rex", volume = 3.0 }
+    val d = #cat { name = "Snowball", hunger = 0.2 }
+    println(a == b) // prints 'false'
+    println(a == c) // prints 'false'
+    println(a == d) // prints 'true'
+    println(tag_eq(a, b)) // prints 'true'
+    println(tag_eq(a, c)) // prints 'false'
+    println(tag_eq(a, d)) // prints 'true'
+}
+</gcb>
+</p>
+        `
     },
 
     {
