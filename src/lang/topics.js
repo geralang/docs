@@ -1470,19 +1470,430 @@ proc strcmp(a, b) = 0..min(length(a), length(b))
     {
         name: "The Core Module",
         id: "the-core-module",
-        body: `[todo]`
+        body: `
+<p>
+The <c>core</c>-module is a very special module containing built-in procedures.
+Everything from this module is imported by default, as if you did 
+<c>use core::*</c> at the top of every file.
+</p>
+
+<h>addr_eq</h>
+<p>
+Either takes two objects or two arrays
+and returns <c>true</c> if modifying the object or array behind one of 
+the references will also modify the object or array behind the other.
+In other words it doesn't check if the referenced objects or arrays are equal, 
+but rather if they refer to the exact same object or array.
+<gcb>\
+mod example
+
+use std::io::println
+
+proc main() {
+    val a = { value = 5 }
+    val b = { value = 10 }
+    val c = { value = 5 }
+    val d = a
+    println(a == b) // prints 'false'
+    println(a == c) // prints 'true'
+    println(a == d) // prints 'true'
+    println(addr_eq(a, b)) // prints 'false'
+    println(addr_eq(a, c)) // prints 'false'
+    println(addr_eq(a, d)) // prints 'true'
+}
+</gcb>
+</p>
+
+<h>as_flt</h>
+<p>
+Returns the given integer or float as a float.
+<gcb>\
+mod example
+
+proc any_sqrt(x) = x
+    |> as_flt()
+    |> std::math::sqrt()
+
+proc main() {
+    std::io::println(any_sqrt(25)) // prints '5.0'
+    std::io::println(any_sqrt(16)) // prints '4.0'
+    std::io::println(any_sqrt(4.0)) // prints '2.0'
+}
+</gcb>
+</p>
+
+<h>as_int</h>
+<p>
+Returns the given integer or float as an integer.
+Floats are truncated (rounded towards zero).
+<gcb>\
+mod example
+
+proc int_div(a, b) = as_flt(as_int(a) / as_int(b))
+
+proc main() {
+    std::io::println(int_div(4.1, 2.5)) // prints '2.0'
+    std::io::println(int_div(9.4, 3.2)) // prints '3.0'
+    std::io::println(int_div(4.2, 4.6)) // prints '1.0'
+}
+</gcb>
+</p>
+
+<h>as_str</h>
+<p>
+Returns the given value as a string.
+<gcb>\
+mod example
+
+proc greet(thing) = "Hello, _!"
+    |> std::str::fmt([ as_str(thing) ]) // replaces '_'s with contents of array
+    |> std::io::println()
+
+proc main() {
+    greet("world") // prints 'Hello, world!'
+    greet({ name = "Cookie" }) // prints 'Hello, &lt;object&gt;!'
+    greet(std::math::PI) // prints 'Hello, 3.141593!'
+}
+</gcb>
+</p>
+
+<h>concat</h>
+<p>
+Returns a new string by appending the second string to the end of the first.
+<gcb>\
+mod example
+
+proc main() {
+    val a = "Hello, "
+    val b = "world!"
+    val c = "Gera!"
+    std::io::println(concat(a, b)) // prints 'Hello, world!'
+    std::io::println(concat(a, c)) // prints 'Hello, Gera!'
+}
+</gcb>
+</p>
+
+<h>exhaust</h>
+<p>
+Gets and discards the next elements from the given iterator until the iterator
+reaches the end. This is the backbone of the entire iterator API.
+<gcb>\
+mod example
+
+use std::iter::map
+use std::io::println
+
+// this is exactly how 'std::iter::for_each' works
+proc for_each(iter, f) = iter
+    // create a new iterator with the values of the old mapped using a function
+    |> map(f)
+    // doesn't matter what type of value 'f' returns, even if it's unit,
+    // since it's discarded by 'exhaust'
+    |> exhaust()
+
+proc main() {
+    0..10 |> for_each(println)
+}
+</gcb>
+</p>
+
+<h>hash</h>
+<p>
+Returns a 64-bit hash of the given value. Note that hash objects, arrays and
+closures are hashed by their references, not the values they contain.
+<gcb>\
+mod example
+
+use std::io::println
+
+proc main() {
+    val a = { name = "Cookie", age = 5 }
+    println(hash(a)) // prints a different number each time
+    println(hash(a.name)) // prints the same value each time
+    println(hash(a.age)) // prints the same value each time
+}
+</gcb>
+</p>
+
+<h>length</h>
+<p>
+Returns the length of the given string (in code points) or array (in elements)
+as an integer.
+<gcb>\
+mod example
+
+use std::io::println
+
+proc main() {
+    println(length("Hello")) // prints '5'
+    println(length([2, 3, 5, 7])) // prints '4'
+    println(length("This string is 28 chars long")) // prints '28'
+}
+</gcb>
+</p>
+
+<h>panic</h>
+<p>
+Logs the given string reason along with other information useful for debugging
+and makes the program exit immediately.
+</p>
+<p>
+This mechanism is supposed to be used in situations where the programmer made a 
+mistake, not an actual valid state of the program.
+That's also why you're not able to handle a panic in any way. Use a
+<a target="_blank" href="../docs/std/res.html">result</a> if you want the error
+to be handled.
+</p>
+<p>
+Since the procedure never actually returns, it returns a theoretical
+value of type <c>any</c>, meaning it may be used as a placeholder for any other
+value.
+<gcb>\
+mod example
+
+proc weekday(n) {
+    case n {
+        0 -> return "Monday"
+        1 -> return "Tuesday"
+        2 -> return "Wednesday"
+        3 -> return "Thursday"
+        4 -> return "Friday"
+        5 -> return "Saturday"
+        6 -> return "Sunday"
+    } return panic("Invalid input!") // used as a placeholder for a string here
+}
+</gcb>
+</p>
+
+<h>range</h>
+<p>
+Returns an iterator over all integers starting at the first argument up to
+(not including) the integer passed as the second argument.
+This procedure is called when you use the <c>start..end</c>-syntax.
+<gcb>\
+mod example
+
+use std::(iter::for_each, io::println)
+
+proc main() {
+    0..10 |> for_each(println) // prints '0', '1', ..., '8', '9'
+}
+</gcb>
+</p>
+
+<h>range_incl</h>
+<p>
+Returns an iterator over all integers starting at the first argument up to
+(including) the integer passed as the second argument.
+This procedure is called when you use the <c>start..=end</c>-syntax.
+<gcb>\
+mod example
+
+use std::(iter::for_each, io::println)
+
+proc main() {
+    0..=10 |> for_each(println) // prints '0', '1', ..., '9', '10'
+}
+</gcb>
+</p>
+
+<h>substring</h>
+<p>
+Creates a new string by copying the part of the given source string
+provided by the first argument starting at the code point index 
+provided by the second argument up to the code point index provided by
+the third argument. If any index is negative, the length of the source string
+will be added to it.
+<gcb>\
+mod example
+
+use std::io::println
+
+proc main() {
+    val greeting = "Hello, world!"
+    println(substring(greeting, 0, 4)) // prints 'Hell'
+    println(substring(greeting, 7, -1)) // prints 'world'
+}
+</gcb>
+</p>
+
+<h>tag_eq</h>
+<p>
+Given two union values, this procedure compares them only by their variant,
+not the value they hold.
+<gcb>\
+mod example
+
+use std::io::println
+
+proc main() {
+    val a = #cat { name = "Snowball", hunger = 0.2 }
+    val b = #cat { name = "Cookie", hunger = 0.6 }
+    val c = #dog { name = "Rex", volume = 3.0 }
+    val d = #cat { name = "Snowball", hunger = 0.2 }
+    println(tag_eq(a, b)) // prints 'true'
+    println(tag_eq(a, c)) // prints 'false'
+    println(tag_eq(a, d)) // prints 'true'
+}
+</gcb>
+</p>
+        `
     },
 
     {
         name: "Time of Evaluation",
         id: "time-of-evaluation",
-        body: `[todo]`
+        body: `
+<p>
+Up to this point, all Gera code we have seen has been executed when the
+program itself was executed. However, the Gera compiler features an interpreter,
+which makes it possible to execute Gera code while it is being compiled.
+</p>
+<p>
+There are a number of "static" contexts in which any code will be evaluated
+at time of compilation, these being:
+<ul>
+    <li>global variables / constants</li>
+    <li><c>case</c> branch values</li>
+    <li><c>static</c> expressions</li>
+</ul>
+</p>
+
+<h>Static Context</h>
+<p>
+Almost any expressions may be evaluated at compilation time, even procedure calls.
+The only limitations are that it may not use I/O and that it's slower since it's
+interpreted. As an example, let's compute the 30th Fibonacci number at compile time
+using our beloved linear Fibonacci sequence iterator:
+<gcb>\
+mod example
+
+use std::(iter::*, opt::expect, io::println)
+
+// Iterator over the Fibonacci sequence
+proc fib() {
+    mut a = 0
+    mut b = 1
+    return || {
+        val c = a + b
+        a = b
+        b = c
+        return #next c
+    }
+}
+
+// compute the 30th Fibonacci number at compile time
+val fib30 = fib()
+    |> skip(30)
+    |> next()
+    |> expect("is infinite")
+
+proc main() {
+    println(fib30) // prints '2178309'
+}
+</gcb>
+</p>
+
+<h>The <c>static</c>-Keyword</h>
+<p>
+You can insert a static expression at any point by simply writing <c>static</c>
+in front of it. This will cause the compiler to evaluate the expression at
+compile time, making it unable to access any variables declared in the scope
+around it. As an example we can use this to remove the global variable from
+our example above:
+<gcb>\
+mod example
+
+use std::(iter::*, opt::expect, io::println)
+
+// Iterator over the Fibonacci sequence
+proc fib() {
+    mut a = 0
+    mut b = 1
+    return || {
+        val c = a + b
+        a = b
+        b = c
+        return #next c
+    }
+}
+
+proc main() {
+    // compute the 30th Fibonacci number at compile time,
+    // then simply insert the value into the variable at runtime
+    val fib30 = static fib()
+        |> skip(30)
+        |> next()
+        |> expect("is infinite")
+    println(fib30)
+}
+</gcb>
+</p>
+
+<h>A Blurry Line</h>
+<p>
+To demonstrate how blurry the line between compile time and runtime can be,
+consider this piece of code, which demonstrates that functions can capture
+local variables at compile time and use and modify them at runtime:
+<gcb>\
+mod example
+
+use std::io::println
+
+proc next_getter() {
+    // this gets executed at compile time
+    mut i = 0
+    return || {
+        // this gets executed at runtime
+        val c = i
+        i = i + 1
+        return c
+    }
+}
+
+proc main() {
+    val next = static next_getter()
+    println(next()) // prints '0'
+    println(next()) // prints '1'
+    println(next()) // prints '2'
+    println(next()) // prints '3'
+    println(next()) // prints '4'
+}
+</gcb>
+</p>
+        
+        `
     },
 
     {
         name: "Conditional Compilation",
         id: "conditional-compilation",
-        body: `[todo]`
+        body: `
+<p>
+You can use the <c>target ... { ... }</c>-syntax to only include a piece of code
+when compiling to a specific target output format, 
+these being <c>c</c> and <c>js</c>:
+<gcb>\
+mod example
+
+target c {
+    proc add(x, y) = x + y
+}
+
+proc main() {
+    target c {
+        println("We are compiling to C!")
+        println(add(5, 10))
+    }
+    target js {
+        println("We are compiling to JS!")
+        // 'add' isn't available
+    }
+}
+</gcb>
+</p>
+        
+        `
     },
 
     {
