@@ -40,7 +40,11 @@ function configure_page(topic, topic_idx) {
         .split("<cb>").join("<div class=\"codeblock\">")
         .split("</cb>").join("</div>")
         .split("<gcb>").join("<div class=\"codeblock codeblock-gera\">")
-        .split("</gcb>").join("</div>");
+        .split("</gcb>").join("</div>")
+        .split("<ecb>").join("<div class=\"codeblock codeblock-gem\">")
+        .split("</ecb>").join("</div>")
+        .split("<ccb>").join("<div class=\"codeblock codeblock-c\">")
+        .split("</ccb>").join("</div>");
     highlight_gera_blocks();
     const connections = document.createElement("div");
     connections.id = "connections";
@@ -55,6 +59,24 @@ function highlight_gera_blocks() {
             highlighting.add_onload(() => {
                 block.innerHTML = highlighting.highlight(
                     block.innerText, "source.gera"
+                );
+            });
+        });
+    }
+    for(const block of document.getElementsByClassName("codeblock-gem")) {
+        on_window_load(() => {
+            highlighting.add_onload(() => {
+                block.innerHTML = highlighting.highlight(
+                    block.innerText, "source.gem"
+                );
+            });
+        });
+    }
+    for(const block of document.getElementsByClassName("codeblock-c")) {
+        on_window_load(() => {
+            highlighting.add_onload(() => {
+                block.innerHTML = highlighting.highlight(
+                    block.innerText, "source.c"
                 );
             });
         });

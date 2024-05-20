@@ -10,6 +10,11 @@
     --secondary-light: #c05895;
 }
 
+*::selection {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+}
+
 body {
     position: relative;
     width: 100vw;
