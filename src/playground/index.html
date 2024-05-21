@@ -3,9 +3,30 @@
     <head>
         <meta charset="utf-8">
         <title>Gera Playground</title>
+        <link rel="stylesheet" href="index.css">
+        <link rel="stylesheet" href="../highlighting.css">
         <script src="gerac-impl.js"></script>
         <script src="gerac.js"></script>
+        <script src="index.js"></script>
+        <script src="../highlighting.js" type="module"></script>
     </head>
     <body>
+        <div id="navbar">
+            <button onclick="toggle_js_output(this)">Show Compiler Output</button>
+            <button onclick="run_input()">Run</button>
+        </div>
+        <div id="editor">
+            <div class="editor-block-wrapper">
+                <div class="editor-block">
+                    <textarea id="gera-input-area"></textarea>
+                </div>
+            </div>
+            <div class="editor-block-wrapper" id="js-output" hidden>
+                <div class="editor-block" id="js-output-area"></div>
+            </div>
+            <div class="editor-block-wrapper">
+                <div class="editor-block" id="cli-output-area"></div>
+            </div>
+        </div>
     </body>
 </html>

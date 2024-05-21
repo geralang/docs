@@ -1,0 +1,64 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Cousine:wght@1,700&display=swap');
+
+:root {
+    --primary-dark: #1f1717;
+    --primary-light: #fcf5ed;
+    --accent: #fcf5ed44;
+    --secondary-dark: #625195;
+    --secondary-light: #c05895;
+}
+
+body {
+    margin: 0px;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--primary-dark);
+    color: var(--primary-light);
+}
+
+#navbar {
+    width: 100%;
+    height: 4rem;
+}
+
+#editor {
+    width: 100%;
+    flex: 1 1 0px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: row;
+}
+
+.editor-block-wrapper {
+    flex: 1 1 0px;
+    height: calc(100vh - 4rem);
+    box-sizing: border-box;
+    padding: 0.5rem;
+}
+
+.editor-block {
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+    font-family: "Cousine", monospace;
+    box-sizing: border-box;
+    padding: 0.5rem;
+    outline: 1px solid var(--accent);
+    border-radius: 0.5rem;
+}
+
+#gera-input-area {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    resize: none;
+    font-family: "Cousine", monospace;
+}
+
+#js-output-area {
+    white-space: pre-wrap;
+}
