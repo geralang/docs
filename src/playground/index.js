@@ -28,15 +28,22 @@ function filter_displayed_output(output) {
     return out_lines.join("\n");
 }
 
+let stdlib_gera_files = null;
+let stdlib_js_files = null;
+
 function run_input() {
     const input = document.getElementById("gera-input-area");
     const output = document.getElementById("js-output-area");
     const stdout = document.getElementById("cli-output-area");
     stdout.innerText = "";
+    const input_names = [ "playground.gera" ];
+    const input_contents = [ input.value ];
+    for(const std_gera_file of stdlib_gera_files) {
+        input_names.push(std_gera_file.name);
+        input_contents.push(std_gera_file.content);
+    }
     const start_time = window.performance.now();
-    const result = gerac.compile(
-        ["playground.gera"], [input.value], "playground::main"
-    )
+    const result = gerac.compile(input_names, input_contents, "playground::main")
     const end_time = window.performance.now();
     const taken_time = end_time - start_time;
     if(result.successful()) {
@@ -48,11 +55,16 @@ function run_input() {
             output.innerHTML = highlighting
                 .highlight(displayed_output, "source.js");
         });
+        let executed_output = "";
+        for(const std_js_file of stdlib_js_files) {
+            executed_output += std_js_file.content;
+        }
+        executed_output += result.value();
         try {
-            eval(result.value());
+            eval(executed_output);
         } catch(e) {
             console.error(e);
-            throw e;    
+            throw e;
         }
     } else {
         console.error(`\x1b[90mCompilation failed after ${taken_time}ms.\x1b[0m\n`);
@@ -62,8 +74,68 @@ function run_input() {
     }
 }
 
+function await_all(tasks, callback) {
+    for(const task of tasks) {
+        task.load(() => {
+            task.loaded = true;
+            let all_loaded = true;
+            for(const task of tasks) {
+                if(!task.loaded) {
+                    all_loaded = false;
+                    break;
+                }
+            }
+            if(all_loaded) {
+                callback();
+            }
+        })
+    }
+}
+
+function loadFileList(fileListPath, callback) {
+    fetch(fileListPath)
+        .then(r => r.text())
+        .then(files => {
+            const tasks = files.split("\n").filter(n => n.length > 0).map(name => { 
+                return {
+                    name: name,
+                    content: null,
+                    loaded: false,
+                    load: function(onload) {
+                        return fetch(name)
+                            .then(r => r.text())
+                            .then(content => {
+                                this.content = content;
+                                onload();
+                            });
+                    }
+                };
+            });
+            await_all(tasks, () => callback(tasks));
+        });
+}
+
 window.onload = () => {
     toggle_js_output(document.getElementById("show_output_box"));
+    const run_button = document.getElementById("run-button");
+    await_all([
+        { loaded: false, load: (callback) => loadFileList(
+            "./std-sources-gera.txt",
+            (files) => {
+                stdlib_gera_files = files;
+                callback();
+            }
+        ) },
+        { loaded: false, load: (callback) => loadFileList(
+            "./std-sources-js.txt",
+            (files) => {
+                stdlib_js_files = files;
+                callback();
+            }
+        ) }
+    ], () => {
+        run_button.hidden = false;
+    })
     const stdout = document.getElementById("cli-output-area");
     const console_out = console.log;
     const console_err = console.error;

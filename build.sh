@@ -11,11 +11,13 @@ cp -r ../test/.gerap/docs ./build/docs
 
 BUILDER_LIB=$(find 'compiler/libs' -type f | tr '\n' ':')
 
-rm -rf gerac-gh
-git clone https://github.com/geralang/gerac gerac-gh
-cd gerac-gh
-make
-cd ..
+#rm -rf gerac-gh
+#git clone https://github.com/geralang/gerac gerac-gh
+#cd gerac-gh
+#make
+#cd ..
+mkdir gerac-gh -p
+cp gerac.jar gerac-gh/gerac.jar
 
 mkdir compiler/out -p
 javac \
@@ -39,3 +41,13 @@ java -cp "compiler/out/builder.jar:$BUILDER_LIB" typesafeschwalbe.Builder \
     build/playground/gerac-impl.js
 
 rm -rf gerac-gh
+
+rm -rf std-gh
+git clone https://github.com/geralang/std std-gh
+cp -r std-gh/src ./build/playground/std-gera/
+cp -r std-gh/src-js ./build/playground/std-js/
+cd build/playground
+find std-gera -type f \( -iname \*.gera -o -iname \*.gem \) > std-sources-gera.txt
+find std-js -name "*.js" > std-sources-js.txt
+cd ../..
+rm -rf std-gh
