@@ -1,28 +1,18 @@
 #!/bin/bash -e
 
-# remove previous output
-rm -rf output
+rm -rf build
 
-# clone compiler and stdlib
-git clone https://github.com/geralang/gerac gerac
-git clone https://github.com/geralang/std std
+cp -r ./src ./build
 
-# compile compiler to webassembly binary
-cd gerac-js
-wasm-pack build --target web
+cd ../test
+gerap doc std
+cd ../docs
+cp -r ../test/.gerap/docs ./build/docs
+
+BUILDER_LIB=$(find 'compiler/libs' -type f | tr '\n' ':')
+
+rm -rf gerac-gh
+git clone https://github.com/geralang/gerac gerac-gh
+cd gerac-gh
+make
 cd ..
-
-# copy everything into a new output directory
-cp src output -r
-cp gerac-js/pkg output/pkg -r
-cp std output/std -r
-cd output/std/src
-find . -name '*.gera' -o -name '*.gem' > ../../std_gera_files.txt
-cd ..
-cd src-js
-find . -name '*.js' > ../../std_js_files.txt
-cd ../../..
-
-# remove cloned repos
-rm -rf gerac
-rm -rf std

@@ -1,4 +1,2 @@
-/gerac-js/target
-/gerac-js/pkg
-/gerac-js/Cargo.lock
-/output
+/build
+/compiler/out
