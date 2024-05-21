@@ -25,11 +25,11 @@ body {
         linear-gradient(to top right, var(--secondary-light), 60%, var(--secondary-dark));
     background-repeat: no-repeat;
     background-size: cover;
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 #example {
-    position: fixed;
+    position: absolute;
     min-width: 25vw;
     min-height: 50vh;
     top: 50vh;
@@ -65,7 +65,8 @@ body {
 
 #content {
     width: 50%;
-    min-height: 100vh;
+    height: 100vh;
+    overflow-y: scroll;
     background: var(--primary-dark);
     color: var(--primary-light);
     font-family: "Rubik", sans-serif;

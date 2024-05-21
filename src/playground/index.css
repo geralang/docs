@@ -1,5 +1,6 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Cousine:wght@1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,400;0,700;1,400;1,700&display=swap");
 
 :root {
     --primary-dark: #1f1717;
@@ -20,9 +21,73 @@ body {
     color: var(--primary-light);
 }
 
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
 #navbar {
     width: 100%;
     height: 4rem;
+    display: flex;
+    flex-direction: row;
+    box-sizing: border-box;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    font-family: "Rubik", sans-serif;
+}
+
+#navbar-logo {
+    height: 4rem;
+}
+
+#navbar-links-wrapper {
+    margin-left: 0.5rem;
+    position: relative;
+    flex: 1 1 0px;
+    height: 100%;
+}
+
+#navbar-links {
+    position: absolute;
+    top: 50%;
+    transform: translate(0px, -50%);
+}
+
+#navbar-links > a {
+    margin: 0.5rem;
+    font-size: 1.2rem;
+}
+
+#navbar-controls-wrapper {
+    flex-shrink: 0;
+    height: 100%;
+}
+
+#navbar-controls {
+    margin-top: 2rem;
+    transform: translate(0px, -50%);
+}
+
+#navbar-controls > button {
+    margin-left: 1rem;
+    background: transparent;
+    color: inherit;
+    font-family: inherit;
+    font-size: 1.2rem;
+    padding: 0.5rem;
+    border: none;
+    outline: 2px solid var(--primary-light);
+    border-radius: 0.25rem;
+}
+
+#navbar-controls > button:hover {
+    background: var(--primary-light);
+    color: var(--primary-dark);
 }
 
 #editor {
@@ -44,7 +109,8 @@ body {
     width: 100%;
     height: 100%;
     overflow-y: scroll;
-    font-family: "Cousine", monospace;
+    font-family: "Noto Sans Mono", monospace;
+    font-weight: 600;
     box-sizing: border-box;
     padding: 0.5rem;
     outline: 1px solid var(--accent);
@@ -56,9 +122,23 @@ body {
     height: 100%;
     box-sizing: border-box;
     resize: none;
-    font-family: "Cousine", monospace;
+    font-family: "Noto Sans Mono", monospace;
 }
 
 #js-output-area {
     white-space: pre-wrap;
+}
+
+#cli-output-area {
+    white-space: pre-wrap;
+    line-height: 1.25rem;
+    font-size: 1rem;
+}
+
+#cli-output-area hr {
+    border: none;
+    outline: node;
+    background: var(--accent);
+    height: 1px;
+    width: 90%;
 }

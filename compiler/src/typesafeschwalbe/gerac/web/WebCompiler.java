@@ -23,7 +23,7 @@ public class WebCompiler {
         );
     }
 
-    @JSBody(params = { "callback" }, script = "gerac = callback;")
+    @JSBody(params = { "callback" }, script = "set_gerac_impl(callback);")
     public static native boolean setCompilerCallback(CompilerCallback callback);
 
     public static void main(String[] args) {
