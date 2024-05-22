@@ -46,7 +46,7 @@ if [ ! -d "build-cache/webc-out" ]; then
         -d "build-cache/webc-out"
 fi
 
-# Compile gerac to Javascript if not present
+# Compile gerac to Javascript
 rm -rf "build-cache/bytecoder-in"
 mkdir "build-cache/bytecoder-in"
 cp -r "build-cache/webc-out/." "build-cache/bytecoder-in"
@@ -58,8 +58,9 @@ java -jar "../bytecoder.jar" compile js \
     -builddirectory=..
 cd ../..
 
-exit 0
+# TODO: ADJUST THE EXISTING PLAYGROUND AND PUT OUTPUT WASM INTO BUILD DIRECTORY
 
+# Put standard library Gera and JS sources into build directory
 rm -rf std-gh
 git clone https://github.com/geralang/std std-gh
 cp -r std-gh/src ./build/playground/std-gera/
